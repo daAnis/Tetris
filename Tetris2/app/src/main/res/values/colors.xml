@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary_color">#FFEDF7</color>
+    <color name="text_color">#000000</color>
+    <color name="check_box_color">#A78AB1</color>
 </resources>
