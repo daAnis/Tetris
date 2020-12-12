@@ -9,16 +9,10 @@ import android.widget.CheckBox;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CheckBox login;
-    private CheckBox sign_up;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        login = (CheckBox) findViewById(R.id.login);
-        sign_up = (CheckBox) findViewById(R.id.sign_up);
     }
 
     public void loginClick(View view) {
