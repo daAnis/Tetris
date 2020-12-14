@@ -1,16 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/primary_color"
     tools:context=".AdminActivity">
-
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Admin"
-        tools:layout_editor_absoluteX="177dp"
-        tools:layout_editor_absoluteY="303dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="Стаканы"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/text_color"
+        android:layout_marginTop="5dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/check_box_color"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/glass_list"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"/>
+        <ImageView
+            android:id="@+id/iw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_button"
+            android:layout_below="@id/glass_list"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/tw" />
+        <TextView
+            android:id="@+id/tw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Добавить"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/text_color"
+            android:layout_below="@id/glass_list"
+            android:layout_alignRight="@id/glass_list"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/check_box_color"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Фигуры и уровни"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/text_color" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/check_box_color"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/figure_list"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"/>
+        <ImageView
+            android:id="@+id/iw1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_button"
+            android:layout_below="@id/figure_list"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/tw1" />
+        <TextView
+            android:id="@+id/tw1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Добавить"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/text_color"
+            android:layout_below="@id/figure_list"
+            android:layout_alignRight="@id/figure_list"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/check_box_color"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Звуковое сопровождение"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/text_color" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/check_box_color"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/music_list"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"/>
+        <ImageView
+            android:id="@+id/iw2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_button"
+            android:layout_below="@id/music_list"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/tw2" />
+        <TextView
+            android:id="@+id/tw2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Добавить"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/text_color"
+            android:layout_below="@id/music_list"
+            android:layout_alignRight="@id/music_list"/>
+    </RelativeLayout>
+</LinearLayout>
