@@ -52,6 +52,12 @@ public class Tetris extends ApplicationAdapter {
 	private int score;
 	private SoftKey lastPressedSoftKey;
 
+	private IActivityRequestHandler myRequestHandler;
+
+	public Tetris (IActivityRequestHandler handler) {
+		myRequestHandler = handler;
+	}
+
 	public static void renderBlock(ShapeRenderer renderer, int column, int row) {
 		renderer.rect(STAGE_START_X + column * CELL_SIZE, STAGE_START_Y + row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 	}
@@ -61,6 +67,7 @@ public class Tetris extends ApplicationAdapter {
 		stage = new Stage(new FitViewport(Constants.STAGE_WIDTH, Constants.STAGE_HEIGHT));
 		Gdx.input.setInputProcessor(stage);
 		camera = new OrthographicCamera();
+		//устанавливаем размер игрового поля
 		camera.setToOrtho(false, Constants.STAGE_WIDTH, Constants.STAGE_HEIGHT);
 		batch = new SpriteBatch();
 		gameoverFont = new BitmapFont();
@@ -68,7 +75,7 @@ public class Tetris extends ApplicationAdapter {
 		scoreFont = new BitmapFont();
 		scoreFont.setColor(Color.BLACK);
 		renderer = new ShapeRenderer();
-		fallingSpeed = 4.5f; // blocks per seconds
+		fallingSpeed = 4.5f; // блоков в секунду
 		gameStage = new GameStage();
 		currentTetromino = Tetromino.getInstance();
 		nextTetromino = Tetromino.getInstance();
@@ -115,11 +122,21 @@ public class Tetris extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		if (!isGameGoing) {
+			myRequestHandler.closeGame(score);
+			return;
+		}
+		/*if (!isGameGoing) {
+			//установка матрицы проекции камеры изображению
 			batch.setProjectionMatrix(camera.combined);
+			//начало серии отрисовки
 			batch.begin();
-			gameoverFont.draw(batch, "Game over", (STAGE_WIDTH - ("Game over".length() / 2 * gameoverFont.getLineHeight())) / 2, STAGE_HEIGHT / 2 - gameoverFont.getLineHeight() / 2);
+			//игра окончена
+			gameoverFont.draw(batch, "Game over",
+					(STAGE_WIDTH - ("Game over".length() / 2 * gameoverFont.getLineHeight())) / 2,
+					STAGE_HEIGHT / 2 - gameoverFont.getLineHeight() / 2);
+			//окончание серии
 			batch.end();
-			// Restart
+			// перезапуск игры
 			if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 				isGameGoing = true;
 				gameStage.reset();
@@ -128,7 +145,7 @@ public class Tetris extends ApplicationAdapter {
 				nextTetromino = Tetromino.getInstance();
 			}
 			return;
-		}
+		}*/
 
 		if (TimeUtils.millis() - lastFallMillis > (1 / fallingSpeed) * 1000) {
 			lastFallMillis = TimeUtils.millis();
@@ -159,11 +176,13 @@ public class Tetris extends ApplicationAdapter {
 			currentTetromino.fall();
 		}
 
+		//пересчет матрицы проекции экрана
 		camera.update();
 
 		renderStage();
 	}
 
+	//закрытие игры
 	@Override
 	public void dispose() {
 		stage.dispose();
@@ -173,6 +192,7 @@ public class Tetris extends ApplicationAdapter {
 		scoreFont.dispose();
 	}
 
+	//отслеживает нажатия на кнопки управления
 	private boolean isKeyPressed(int hardKey) {
 		if (Gdx.input.isKeyPressed(hardKey)) {
 			return true;
@@ -190,7 +210,9 @@ public class Tetris extends ApplicationAdapter {
 		return false;
 	}
 
+	//отвечает за отрисовку экрана игры в данный момент
 	private void renderStage() {
+		//время между последним и текущим кадром в секундах
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 
