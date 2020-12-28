@@ -77,13 +77,13 @@ public class Tetris extends ApplicationAdapter {
 		stage.addActor(gameStage);
 		Group controlGroup = new Group();
 		controlGroup.setPosition(80, 5);
-		Texture leftArrowTexture = new Texture(Gdx.files.internal("arrow_left.png"));
+		Texture leftArrowTexture = new Texture(Gdx.files.internal("arrow-pointing-left.png"));
 		Image leftArrow = new Image(leftArrowTexture);
-		Texture rightArrowTexture = new Texture(Gdx.files.internal("arrow_right.png"));
+		Texture rightArrowTexture = new Texture(Gdx.files.internal("right-chevron.png"));
 		Image rightArrow = new Image(rightArrowTexture);
-		Texture circleTexture = new Texture(Gdx.files.internal("circle.png"));
+		Texture circleTexture = new Texture(Gdx.files.internal("circular-refreshment-arrow.png"));
 		Image circle = new Image(circleTexture);
-		Texture downArrowTexture = new Texture(Gdx.files.internal("arrow_down.png"));
+		Texture downArrowTexture = new Texture(Gdx.files.internal("down-arrow.png"));
 		Image downArrow = new Image(downArrowTexture);
 		registerSoftKeyPressEvent(leftArrow, SoftKey.LEFT);
 		registerSoftKeyPressEvent(rightArrow, SoftKey.RIGHT);
