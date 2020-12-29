@@ -12,11 +12,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 public class LoginActivity extends AppCompatActivity {
+    EditText username;
+    EditText password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        username = findViewById(R.id.editTextTextPersonName);
+        password = findViewById(R.id.editTextTextPassword);
 
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -35,7 +40,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 if ((login.compareTo(UserInformation.PLAYER_LOGIN) == 0) &&
                         (password.compareTo(UserInformation.PLAYER_PASSWORD) == 0)) {
-                    startActivity(new Intent(LoginActivity.this, PlayerActivity.class));
+                    Intent intent = new Intent(LoginActivity.this, PlayerActivity.class);
+                    intent.putExtra("username", username.getText().toString());
+                    startActivity(intent);
                     finish();
                 }
             }

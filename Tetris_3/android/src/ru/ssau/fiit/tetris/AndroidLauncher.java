@@ -14,7 +14,7 @@ public class AndroidLauncher extends AndroidApplication implements IActivityRequ
 	protected Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			startActivity(new Intent(AndroidLauncher.this, PlayerActivity.class));
+			//startActivity(new Intent(AndroidLauncher.this, PlayerActivity.class));
 			finish();
 		}
 	};

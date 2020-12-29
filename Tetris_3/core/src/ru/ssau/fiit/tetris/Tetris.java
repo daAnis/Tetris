@@ -20,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import sun.nio.cs.ext.GB18030;
+
 import static ru.ssau.fiit.tetris.Constants.CELL_SIZE;
 import static ru.ssau.fiit.tetris.Constants.STAGE_HEIGHT;
 import static ru.ssau.fiit.tetris.Constants.STAGE_WIDTH;
@@ -51,6 +53,7 @@ public class Tetris extends ApplicationAdapter {
 	private GameStage gameStage;
 	private int score;
 	private SoftKey lastPressedSoftKey;
+	private String string;
 
 	private IActivityRequestHandler myRequestHandler;
 
@@ -92,22 +95,34 @@ public class Tetris extends ApplicationAdapter {
 		Image circle = new Image(circleTexture);
 		Texture downArrowTexture = new Texture(Gdx.files.internal("down-arrow.png"));
 		Image downArrow = new Image(downArrowTexture);
+		Texture pauseTexture = new Texture(Gdx.files.internal("pause.png"));
+		Image pause = new Image(pauseTexture);
+		Texture stopTexture = new Texture(Gdx.files.internal("stop.png"));
+		Image stop = new Image(stopTexture);
 		registerSoftKeyPressEvent(leftArrow, SoftKey.LEFT);
 		registerSoftKeyPressEvent(rightArrow, SoftKey.RIGHT);
 		registerSoftKeyPressEvent(circle, SoftKey.ROTATE);
 		registerSoftKeyPressEvent(downArrow, SoftKey.DOWN);
+		registerSoftKeyPressEvent(pause, SoftKey.PAUSE);
+		registerSoftKeyPressEvent(stop, SoftKey.STOP);
 		leftArrow.scaleBy(1.1f);
 		rightArrow.scaleBy(1.1f);
 		circle.scaleBy(1.1f);
 		downArrow.scaleBy(1.1f);
+		pause.scaleBy(1.1f);
+		stop.scaleBy(1.1f);
 		leftArrow.setPosition(0, 0);
 		downArrow.setPosition(90, 0);
 		rightArrow.setPosition(180, 0);
 		circle.setPosition(270, 0);
+		pause.setPosition(305, 270);
+		stop.setPosition(305, 180);
 		controlGroup.addActor(rightArrow);
 		controlGroup.addActor(leftArrow);
 		controlGroup.addActor(circle);
 		controlGroup.addActor(downArrow);
+		controlGroup.addActor(pause);
+		controlGroup.addActor(stop);
 		stage.addActor(controlGroup);
 	}
 
@@ -122,35 +137,32 @@ public class Tetris extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		if (!isGameGoing) {
+			batch.setProjectionMatrix(camera.combined);
+			batch.begin();
+			gameoverFont.draw(batch, string,
+					(STAGE_WIDTH - (string.length() / 2 * gameoverFont.getLineHeight())) / 2,
+					STAGE_HEIGHT / 2 - gameoverFont.getLineHeight() / 2);
+			batch.end();
+			if (Gdx.input.isTouched()) {
+				if (string.compareTo("Pause") == 0)
+					isGameGoing = true;
+				else if (string.compareTo("You lose") == 0)
+					myRequestHandler.closeGame(score);
+				else if (string.compareTo("Game stopped") == 0)
+					myRequestHandler.closeGame(score);
+			}
+			return;
+		}
+
+		if (!isGameGoing) {
 			myRequestHandler.closeGame(score);
 			return;
 		}
-		/*if (!isGameGoing) {
-			//установка матрицы проекции камеры изображению
-			batch.setProjectionMatrix(camera.combined);
-			//начало серии отрисовки
-			batch.begin();
-			//игра окончена
-			gameoverFont.draw(batch, "Game over",
-					(STAGE_WIDTH - ("Game over".length() / 2 * gameoverFont.getLineHeight())) / 2,
-					STAGE_HEIGHT / 2 - gameoverFont.getLineHeight() / 2);
-			//окончание серии
-			batch.end();
-			// перезапуск игры
-			if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-				isGameGoing = true;
-				gameStage.reset();
-				score = 0;
-				currentTetromino = Tetromino.getInstance();
-				nextTetromino = Tetromino.getInstance();
-			}
-			return;
-		}*/
 
 		if (TimeUtils.millis() - lastFallMillis > (1 / fallingSpeed) * 1000) {
 			lastFallMillis = TimeUtils.millis();
 			currentTetromino.fall();
-		} else if (isKeyPressed(Input.Keys.SPACE) && TimeUtils.millis() - lastRotateMillis > MIN_ROTATE_INTERVAL_MILLIS) {
+		} else if (lastPressedSoftKey == SoftKey.ROTATE && TimeUtils.millis() - lastRotateMillis > MIN_ROTATE_INTERVAL_MILLIS) {
 			currentTetromino.rotate(gameStage);
 			lastRotateMillis = TimeUtils.millis();
 		}
@@ -163,17 +175,26 @@ public class Tetris extends ApplicationAdapter {
 			nextTetromino = Tetromino.getInstance();
 			if (gameStage.isOnGround(currentTetromino.getBlocks())) {
 				isGameGoing = false;
+				string = "You lose";
 				return;
 			}
-		} else if (isKeyPressed(Input.Keys.LEFT) && TimeUtils.millis() - lastHorizontalMoveMillis > MIN_HORIZONTAL_MOVE_INTERVAL_MILLIS) {
+		} else if (lastPressedSoftKey == SoftKey.LEFT && TimeUtils.millis() - lastHorizontalMoveMillis > MIN_HORIZONTAL_MOVE_INTERVAL_MILLIS) {
 			currentTetromino.moveToLeft(gameStage);
 			lastHorizontalMoveMillis = TimeUtils.millis();
-		} else if (isKeyPressed(Input.Keys.RIGHT) && TimeUtils.millis() - lastHorizontalMoveMillis > MIN_HORIZONTAL_MOVE_INTERVAL_MILLIS) {
+		} else if (lastPressedSoftKey == SoftKey.RIGHT && TimeUtils.millis() - lastHorizontalMoveMillis > MIN_HORIZONTAL_MOVE_INTERVAL_MILLIS) {
 			currentTetromino.moveToRight(gameStage);
 			lastHorizontalMoveMillis = TimeUtils.millis();
-		} else if (isKeyPressed(Input.Keys.DOWN) && TimeUtils.millis() - lastFallMillis > MIN_FALL_INTERVAL_MILLIS) {
+		} else if (lastPressedSoftKey == SoftKey.DOWN && TimeUtils.millis() - lastFallMillis > MIN_FALL_INTERVAL_MILLIS) {
 			lastFallMillis = TimeUtils.millis();
 			currentTetromino.fall();
+		} else if (lastPressedSoftKey == SoftKey.PAUSE) {
+			isGameGoing = false;
+			string = "Pause";
+			return;
+		} else if (lastPressedSoftKey == SoftKey.STOP) {
+			isGameGoing = false;
+			string = "Game stopped";
+			return;
 		}
 
 		//пересчет матрицы проекции экрана
@@ -192,32 +213,16 @@ public class Tetris extends ApplicationAdapter {
 		scoreFont.dispose();
 	}
 
-	//отслеживает нажатия на кнопки управления
-	private boolean isKeyPressed(int hardKey) {
-		if (Gdx.input.isKeyPressed(hardKey)) {
-			return true;
-		}
-		switch (hardKey) {
-			case Input.Keys.RIGHT:
-				return lastPressedSoftKey == SoftKey.RIGHT;
-			case Input.Keys.LEFT:
-				return lastPressedSoftKey == SoftKey.LEFT;
-			case Input.Keys.DOWN:
-				return lastPressedSoftKey == SoftKey.DOWN;
-			case Input.Keys.SPACE:
-				return lastPressedSoftKey == SoftKey.ROTATE;
-		}
-		return false;
-	}
-
 	//отвечает за отрисовку экрана игры в данный момент
 	private void renderStage() {
-		//время между последним и текущим кадром в секундах
+		//обновляет сцену//время между последним и текущим кадром в секундах
 		stage.act(Gdx.graphics.getDeltaTime());
+		//отрисовывает сцену
 		stage.draw();
 
 		renderer.setProjectionMatrix(camera.combined);
 		renderer.begin(ShapeRenderer.ShapeType.Line);
+		//отображение следующей фигуры
 		int nextTetriminoBoxX = CELL_SIZE * NUM_COLUMNS + 2 * STAGE_START_X;
 		int nextTetriminoBoxY = STAGE_START_Y + CELL_SIZE * NUM_ROWS - NEXT_TETROIMINO_SIZE;
 		renderer.rect(nextTetriminoBoxX - 1, nextTetriminoBoxY - 1, NEXT_TETROIMINO_SIZE + 2, NEXT_TETROIMINO_SIZE + 2);
@@ -229,6 +234,7 @@ public class Tetris extends ApplicationAdapter {
 		renderer.end();
 
 		batch.setProjectionMatrix(camera.combined);
+		//отображение очков
 		batch.begin();
 		scoreFont.draw(batch, String.format("Score: %d", score), nextTetriminoBoxX, nextTetriminoBoxY - 30);
 		batch.end();
@@ -250,6 +256,6 @@ public class Tetris extends ApplicationAdapter {
 	}
 
 	private enum SoftKey {
-		DOWN, LEFT, RIGHT, ROTATE;
+		DOWN, LEFT, RIGHT, ROTATE, PAUSE, STOP;
 	}
 }

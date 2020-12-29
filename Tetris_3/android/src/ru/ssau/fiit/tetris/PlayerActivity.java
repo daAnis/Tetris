@@ -23,20 +23,19 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(PlayerActivity.this, AndroidLauncher.class));
-                finish();
+                //finish();
             }
         });
 
         records = findViewById(R.id.records);
         userName = findViewById(R.id.user_name);
 
-        /*Bundle arguments = getIntent().getExtras();
+        Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
-            String result = arguments.get("result").toString();
+            String result = arguments.get("username").toString();
             userName.setText(result);
-        }*/
+        }
 
-        userName.setText(Integer.toString(score));
     }
 
     public static void setScore(int score) {
