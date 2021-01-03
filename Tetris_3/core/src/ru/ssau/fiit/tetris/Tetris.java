@@ -146,18 +146,20 @@ public class Tetris extends ApplicationAdapter {
 			if (Gdx.input.isTouched()) {
 				if (string.compareTo("Pause") == 0)
 					isGameGoing = true;
+				else
+					myRequestHandler.closeGame(score);
+				/*else if (string.compareTo("Game stopped") == 0)
+
 				else if (string.compareTo("You lose") == 0)
-					myRequestHandler.closeGame(score);
-				else if (string.compareTo("Game stopped") == 0)
-					myRequestHandler.closeGame(score);
+					myRequestHandler.closeGame(score);*/
 			}
 			return;
 		}
 
-		if (!isGameGoing) {
+		/*if (!isGameGoing) {
 			myRequestHandler.closeGame(score);
 			return;
-		}
+		}*/
 
 		if (TimeUtils.millis() - lastFallMillis > (1 / fallingSpeed) * 1000) {
 			lastFallMillis = TimeUtils.millis();

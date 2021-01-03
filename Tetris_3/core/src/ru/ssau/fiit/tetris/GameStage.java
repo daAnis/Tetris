@@ -105,7 +105,10 @@ public class GameStage extends Actor {
         shapeRenderer.setColor(new Color(r, g, b, 1));
         shapeRenderer.rect(1, 1, CELL_SIZE * NUM_COLUMNS, CELL_SIZE * NUM_ROWS);
 
-        shapeRenderer.setColor(Color.GRAY);
+        //shapeRenderer.setColor(Color.GRAY);
+        float rr = 181f / 255f, gr = 79f / 255f, br = 135f / 255f;
+        shapeRenderer.setColor(new Color(rr, gr, br, 1));
+        //shapeRenderer.setColor(Tetromino.tetromoniColor());
         for (int i = 0; i < NUM_COLUMNS; i++) {
             for (int j = 0; j < NUM_ROWS; j++) {
                 if (isFilled[i][j]) {

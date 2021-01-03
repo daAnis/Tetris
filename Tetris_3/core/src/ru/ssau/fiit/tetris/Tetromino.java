@@ -23,10 +23,22 @@ public class Tetromino {
     private final int[][] relativePositionsOriginal;
     private final float[] originDelta;
 
+    private static float r, g, b;
+
     public static Tetromino getInstance() {
         Tetromino tetromino = new Tetromino(TYPE[random.nextInt(TYPE.length)]);
         tetromino.initPosition();
+
+        Random rand = new Random();
+        r = rand.nextFloat();
+        g = rand.nextFloat();
+        b = rand.nextFloat() ;
+
         return tetromino;
+    }
+
+    public static Color tetromoniColor() {
+        return new Color(r, g, b, 1);
     }
 
     Tetromino(Type type) {
@@ -88,7 +100,8 @@ public class Tetromino {
     }
 
     public void render(ShapeRenderer renderer) {
-        float r = 181f / 255f, g = 79f / 255f, b = 135f / 255f;
+        //float r = 181f / 255f, g = 79f / 255f, b = 135f / 255f;
+        //renderer.setColor(new Color(r, g, b, 1));
         renderer.setColor(new Color(r, g, b, 1));
         for (int[] block: getBlocks()) {
             Tetris.renderBlock(renderer, block[INDEX_COLUMN], block[INDEX_ROW]);
@@ -96,7 +109,7 @@ public class Tetromino {
     }
 
     public void render(ShapeRenderer renderer, int startX, int startY, int boxSize) {
-        float r = 181f / 255f, g = 79f / 255f, b = 135f / 255f;
+        //float r = 181f / 255f, g = 79f / 255f, b = 135f / 255f;
         renderer.setColor(new Color(r, g, b, 1));
         int originX = startX + boxSize * 2;
         int originY = startY + boxSize * 2;
