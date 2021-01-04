@@ -13,8 +13,8 @@ import java.util.List;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder> {
 
-    private final LayoutInflater inflater;
-    private final List <Record> records;
+    private LayoutInflater inflater;
+    private List <Record> records;
 
     RecordAdapter (Context context, List <Record> records) {
         this.records = records;
@@ -41,7 +41,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView pointsView, timeView;
+        TextView pointsView, timeView;
         ViewHolder (View view) {
             super(view);
             pointsView = view.findViewById(R.id.points);

@@ -1,6 +1,7 @@
 package ru.ssau.fiit.tetris;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -37,20 +38,16 @@ public class PlayerActivity extends AppCompatActivity {
             userName.setText(result);
         }
 
+        records.add(new Record("123", "22"));
         RecyclerView recyclerView = findViewById(R.id.records);
         RecordAdapter adapter = new RecordAdapter(this, records);
         recyclerView.setAdapter(adapter);
-
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(manager);
     }
 
     public static void setScore(int score) {
         PlayerActivity.score = score;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        records.add(new Record(score + "", "12:34"));
     }
 
     @Override
