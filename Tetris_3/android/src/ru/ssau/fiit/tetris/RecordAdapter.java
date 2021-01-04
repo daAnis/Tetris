@@ -11,25 +11,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder> {
+public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHolder> {
 
     private LayoutInflater inflater;
     private List <Record> records;
 
-    RecordAdapter (Context context, List <Record> records) {
+    public RecordAdapter (Context context, List <Record> records) {
         this.records = records;
         this.inflater = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
-    public RecordAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecordAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.record_item, parent, false);
-        return new ViewHolder(view);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecordAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecordAdapter.MyViewHolder holder, int position) {
         Record record = records.get(position);
         holder.pointsView.setText(record.getPoints());
         holder.timeView.setText(record.getTime());
@@ -40,9 +40,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         return records.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView pointsView, timeView;
-        ViewHolder (View view) {
+        public MyViewHolder (View view) {
             super(view);
             pointsView = view.findViewById(R.id.points);
             timeView = view.findViewById(R.id.time);

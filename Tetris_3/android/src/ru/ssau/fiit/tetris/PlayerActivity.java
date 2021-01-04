@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class PlayerActivity extends AppCompatActivity {
     private TextView userName;
-    private static int score = 0;
+    private static int score = -1;
     private ArrayList <Record> records = new ArrayList<>();
 
     @Override
@@ -37,17 +37,24 @@ public class PlayerActivity extends AppCompatActivity {
             String result = arguments.get("username").toString();
             userName.setText(result);
         }
-
-        records.add(new Record("123", "22"));
+        
         RecyclerView recyclerView = findViewById(R.id.records);
         RecordAdapter adapter = new RecordAdapter(this, records);
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
+        recyclerView.setHasFixedSize(false);
     }
 
     public static void setScore(int score) {
         PlayerActivity.score = score;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (score != -1)
+            records.add(new Record(score + "", "123"));
     }
 
     @Override
