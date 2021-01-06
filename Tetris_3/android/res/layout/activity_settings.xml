@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/primary_color"
+    tools:context=".SettingsActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textColor="@color/text_color"
+        android:text="Настройки"
+        android:textAlignment="center"
+        android:gravity="center_horizontal" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/check_box_color"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+    <CheckBox
+        android:id="@+id/next_figure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="30dp"
+        android:text="Показ следующей фигуры"
+        android:textColor="@color/text_color"
+        android:buttonTint="@color/check_box_color"/>
+    <CheckBox
+        android:id="@+id/music_on_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="30dp"
+        android:text="Звуковое сопровождение"
+        android:textColor="@color/text_color"
+        android:buttonTint="@color/check_box_color" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textColor="@color/text_color"
+        android:text="Критерий подсчета результатов"
+        android:textAlignment="center"
+        android:gravity="center_horizontal" />
+    <RadioGroup
+        android:id="@+id/show_results"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/rb_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="30dp"
+            android:textColor="@color/text_color"
+            android:buttonTint="@color/check_box_color"
+            android:text="Очки"/>
+        <RadioButton
+            android:id="@+id/rb_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="30dp"
+            android:textColor="@color/text_color"
+            android:buttonTint="@color/check_box_color"
+            android:text="Время"/>
+        <RadioButton
+            android:id="@+id/rb_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="30dp"
+            android:textColor="@color/text_color"
+            android:buttonTint="@color/check_box_color"
+            android:text="Нет"/>
+    </RadioGroup>
+    <ImageButton
+        android:id="@+id/cancel_button_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cancel_button"
+        android:background="@null"
+        android:layout_margin="30dp"
+        android:layout_gravity="right"/>
+</LinearLayout>

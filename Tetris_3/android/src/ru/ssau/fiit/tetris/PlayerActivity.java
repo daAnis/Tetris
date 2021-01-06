@@ -25,12 +25,20 @@ public class PlayerActivity extends AppCompatActivity {
 
         //получить имя игрока
         userName = findViewById(R.id.user_name);
-
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
             String result = arguments.get("username").toString();
             userName.setText(result);
         }
+
+        //насторойки
+        TextView setTW = findViewById(R.id.settings);
+        setTW.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PlayerActivity.this, SettingsActivity.class));
+            }
+        });
 
         //начать новую игру
         TextView textView = findViewById(R.id.tw);
@@ -59,10 +67,12 @@ public class PlayerActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(false);
     }
 
+    //получить текущий результат
     public static void setScore(int score) {
         PlayerActivity.score = score;
     }
 
+    //возвращаемся в меню после игры
     @Override
     protected void onResume() {
         super.onResume();
@@ -70,6 +80,7 @@ public class PlayerActivity extends AppCompatActivity {
             records.add(new Record(score + "", "123"));
     }
 
+    //назад
     @Override
     public void onBackPressed() {
         super.onBackPressed();
