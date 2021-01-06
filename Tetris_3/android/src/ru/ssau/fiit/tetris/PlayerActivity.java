@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,15 +23,7 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
-        TextView textView = findViewById(R.id.tw);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PlayerActivity.this, AndroidLauncher.class));
-                //finish();
-            }
-        });
-
+        //получить имя игрока
         userName = findViewById(R.id.user_name);
 
         Bundle arguments = getIntent().getExtras();
@@ -37,7 +31,26 @@ public class PlayerActivity extends AppCompatActivity {
             String result = arguments.get("username").toString();
             userName.setText(result);
         }
-        
+
+        //начать новую игру
+        TextView textView = findViewById(R.id.tw);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PlayerActivity.this, AndroidLauncher.class));
+            }
+        });
+
+        //справка
+        ImageButton infoButton = findViewById(R.id.info_button);
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PlayerActivity.this, WebViewActivity.class));
+            }
+        });
+
+        //отобразить список результатов
         RecyclerView recyclerView = findViewById(R.id.records);
         RecordAdapter adapter = new RecordAdapter(this, records);
         recyclerView.setAdapter(adapter);
