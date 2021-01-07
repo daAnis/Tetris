@@ -10,8 +10,9 @@ import android.widget.Toast;
 
 public class GlassActivity extends AppCompatActivity {
     GlassView glassView;
-    EditText width, height;
+    EditText width_editable, height_editable;
     Glass glass;
+    int width, height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,25 +21,27 @@ public class GlassActivity extends AppCompatActivity {
 
         //перерисовать стакан при изменении размеров
         glassView = findViewById(R.id.new_glass);
-        width = findViewById(R.id.w);
-        height = findViewById(R.id.h);
+        width_editable = findViewById(R.id.w);
+        height_editable = findViewById(R.id.h);
         glass = new Glass();
         Button drawGlass = findViewById(R.id.draw_glass);
         drawGlass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    glass.setWidth(Integer.parseInt(width.getText().toString()));
+                    width = Integer.parseInt(width_editable.getText().toString());
                 } catch (NumberFormatException e) {
                     Toast.makeText(GlassActivity.this, "Ширина задана неверно!", Toast.LENGTH_LONG);
                     return;
                 }
                 try {
-                    glass.setHeight(Integer.parseInt(height.getText().toString()));
+                    height = Integer.parseInt(height_editable.getText().toString());
                 } catch (NumberFormatException e) {
                     Toast.makeText(GlassActivity.this, "Высота задана неверно!", Toast.LENGTH_LONG);
                     return;
                 }
+                glass.setWidth(width);
+                glass.setHeight(height);
                 glassView.setGlass(glass);
             }
         });
