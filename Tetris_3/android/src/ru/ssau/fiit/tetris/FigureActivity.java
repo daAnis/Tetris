@@ -3,6 +3,8 @@ package ru.ssau.fiit.tetris;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.NumberPicker;
 
 public class FigureActivity extends AppCompatActivity {
@@ -25,6 +27,28 @@ public class FigureActivity extends AppCompatActivity {
             @Override
             public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
                 figure.setLevel(newValue);
+            }
+        });
+
+        //сохранение изменений
+        Button saveFigure = findViewById(R.id.save_figure);
+        saveFigure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo проверка на уникальность
+                //todo проверка на целостность
+                //todo передача стакана в бд
+                finish();
+            }
+        });
+
+        //удаление
+        Button deleteFigure = findViewById(R.id.cancel_figure);
+        deleteFigure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo удаление стакана из бд
+                finish();
             }
         });
     }
