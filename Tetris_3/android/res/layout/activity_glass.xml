@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/primary_color"
     android:orientation="vertical"
     tools:context=".GlassActivity">
@@ -98,5 +99,14 @@
         android:background="@color/check_box_color"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="50dp"/>
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <top.defaults.colorpicker.ColorPickerView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:enableBrightness="true"
+            app:enableAlpha="true"
+            android:layout_marginLeft="50dp"/>
+    </RelativeLayout>
 </LinearLayout>

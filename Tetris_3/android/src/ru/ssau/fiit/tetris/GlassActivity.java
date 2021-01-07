@@ -8,9 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import top.defaults.colorpicker.ColorObserver;
+import top.defaults.colorpicker.ColorPickerView;
+
 public class GlassActivity extends AppCompatActivity {
     GlassView glassView;
     EditText width_editable, height_editable;
+    ColorPickerView colorPickerView;
     Glass glass;
     int width, height;
 
@@ -31,18 +35,26 @@ public class GlassActivity extends AppCompatActivity {
                 try {
                     width = Integer.parseInt(width_editable.getText().toString());
                 } catch (NumberFormatException e) {
-                    Toast.makeText(GlassActivity.this, "Ширина задана неверно!", Toast.LENGTH_LONG);
+                    Toast.makeText(GlassActivity.this, "Ширина задана неверно!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 try {
                     height = Integer.parseInt(height_editable.getText().toString());
                 } catch (NumberFormatException e) {
-                    Toast.makeText(GlassActivity.this, "Высота задана неверно!", Toast.LENGTH_LONG);
+                    Toast.makeText(GlassActivity.this, "Высота задана неверно!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 glass.setWidth(width);
                 glass.setHeight(height);
                 glassView.setGlass(glass);
+            }
+        });
+
+        //изменение цвета
+        colorPickerView.subscribe(new ColorObserver() {
+            @Override
+            public void onColor(int color, boolean fromUser, boolean shouldPropagate) {
+                glassView.setGlassColor(color);
             }
         });
     }

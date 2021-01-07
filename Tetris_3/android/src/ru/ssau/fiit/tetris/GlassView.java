@@ -50,7 +50,12 @@ public class GlassView extends View {
     public void setGlass (Glass glass) {
         this.glass.setWidth(glass.getWidth());
         this.glass.setHeight(glass.getHeight());
-        //this.glass.setColor(glass.getColor());
+
+        postInvalidate();
+    }
+
+    public void setGlassColor (int color) {
+        this.glass.setColor(color);
 
         postInvalidate();
     }
