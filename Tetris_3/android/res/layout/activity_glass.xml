@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textColor="@color/text_color"
-        android:text="Выберите остальное"
+        android:text="Дополнительно"
         android:textAlignment="center"
         android:gravity="center_horizontal"/>
     <View
@@ -103,10 +103,80 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <top.defaults.colorpicker.ColorPickerView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/color_picker"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
             app:enableBrightness="true"
             app:enableAlpha="true"
-            android:layout_marginLeft="50dp"/>
+            android:layout_marginLeft="20dp"/>
+        <TextView
+            android:id="@+id/tw3"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Скорость падения фигур"
+            android:textColor="@color/text_color"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"/>
+        <EditText
+            android:id="@+id/speed_k"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textColor="@color/text_color"
+            android:background="@drawable/edit_text_style"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tw3"/>
+        <TextView
+            android:id="@+id/tw4"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Количество очков за ячейку"
+            android:textColor="@color/text_color"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_below="@id/speed_k"/>
+        <EditText
+            android:id="@+id/points_k"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textColor="@color/text_color"
+            android:background="@drawable/edit_text_style"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tw4"/>
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/save_glass"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Сохранить"
+            android:textColor="@color/text_color"
+            android:background="@drawable/edit_text_style"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/cancel_glass"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Удалить"
+            android:textColor="@color/text_color"
+            android:background="@drawable/edit_text_style"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
 </LinearLayout>

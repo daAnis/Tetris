@@ -1,6 +1,8 @@
 package ru.ssau.fiit.tetris;
 
-public class Glass {
+import java.io.Serializable;
+
+public class Glass implements Serializable {
 
     private int width;
     private int height;

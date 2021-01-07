@@ -33,6 +33,8 @@ public class GlassView extends View {
         init(attrs);
     }
 
+    public Glass getGlass() { return glass; }
+
     private void convertDpToPixels(Context context, float dp) {
         strokeWidth = dp * context.getResources().getDisplayMetrics().density;
     }
@@ -47,15 +49,23 @@ public class GlassView extends View {
                 1.0, 1.0);
     }
 
-    public void setGlass (Glass glass) {
-        this.glass.setWidth(glass.getWidth());
-        this.glass.setHeight(glass.getHeight());
+    public void setGlassSize(int width, int height) {
+        this.glass.setWidth(width);
+        this.glass.setHeight(height);
 
         postInvalidate();
     }
 
-    public void setGlassColor (int color) {
+    public void setGlassColor(int color) {
         this.glass.setColor(color);
+
+        postInvalidate();
+    }
+
+    public void setGlass(Glass glass) {
+        this.glass.setWidth(glass.getWidth());
+        this.glass.setHeight(glass.getHeight());
+        this.glass.setColor(glass.getColor());
 
         postInvalidate();
     }
