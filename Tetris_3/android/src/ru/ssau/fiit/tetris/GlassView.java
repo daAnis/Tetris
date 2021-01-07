@@ -17,33 +17,21 @@ public class GlassView extends View {
 
     private Glass glass;
 
-    private float strokeWidth = 2;
-
     public GlassView(Context context) {
         super(context);
-
-        convertDpToPixels(context, strokeWidth);
-        init(null);
+        init(context, null);
     }
 
     public GlassView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
-        convertDpToPixels(context, strokeWidth);
-        init(attrs);
+        init(context, attrs);
     }
 
     public Glass getGlass() { return glass; }
 
-    private void convertDpToPixels(Context context, float dp) {
-        strokeWidth = dp * context.getResources().getDisplayMetrics().density;
-    }
-
-    private void init(@Nullable AttributeSet set) {
+    private void init(Context context, @Nullable AttributeSet set) {
         rect = new Rect();
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStrokeWidth(strokeWidth);
-        paint.setStyle(Paint.Style.STROKE);
+        paint = MyPaint.setPaint(context);
         glass = new Glass(1, 1,
                 getResources().getColor(R.color.check_box_color),
                 1.0, 1.0);

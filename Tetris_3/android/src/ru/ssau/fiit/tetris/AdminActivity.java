@@ -22,5 +22,14 @@ public class AdminActivity extends AppCompatActivity {
                 startActivity(new Intent(AdminActivity.this, GlassActivity.class));
             }
         });
+
+        //добавить фигуру
+        ImageView addFigure = findViewById(R.id.iw1);
+        addFigure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminActivity.this, FigureActivity.class));
+            }
+        });
     }
 }
