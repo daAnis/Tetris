@@ -8,6 +8,8 @@ public class Glass {
     private double speed_k;
     private double points_k;
 
+    public Glass() { }
+
     public Glass(int width, int height, int color, double speed_k, double points_k) {
         this.width = width;
         this.height = height;

@@ -25,8 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ru.ssau.fiit.tetris.GlassView
-            android:layout_width="200dp"
-            android:layout_height="300dp"/>
+            android:id="@+id/new_glass"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_marginLeft="50dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="30dp"
