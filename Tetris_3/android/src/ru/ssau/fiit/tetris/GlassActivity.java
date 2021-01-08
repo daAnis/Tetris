@@ -108,7 +108,7 @@ public class GlassActivity extends AppCompatActivity {
                 }
                 glass.setPoints_k(points);
                 //todo проверка на уникальность
-                //todo передача стакана в бд
+                AdminActivity.saveGlass(glass);
                 finish();
             }
         });
@@ -118,7 +118,7 @@ public class GlassActivity extends AppCompatActivity {
         cancelGlass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo удаление стакана из бд
+                AdminActivity.deleteGlass(glass);
                 finish();
             }
         });
