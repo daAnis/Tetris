@@ -10,41 +10,40 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class GlassAdapter extends RecyclerView.Adapter <GlassAdapter.MyViewHolder> {
-
+public class FigureAdapter extends RecyclerView.Adapter<FigureAdapter.MyViewHolder> {
     private LayoutInflater inflater;
-    private List<Glass> glasses;
+    private List<Figure> figures;
 
-    public GlassAdapter(Context context, List <Glass> glasses) {
-        this.glasses = glasses;
+    public FigureAdapter(Context context, List<Figure> figures) {
+        this.figures = figures;
         this.inflater = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.glass_item, parent, false);
-        return new GlassAdapter.MyViewHolder(view);
+        View view = inflater.inflate(R.layout.figure_item, parent, false);
+        return new FigureAdapter.MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.getGlassView().setGlass(glasses.get(position));
+        holder.getFigureView().setFigure(figures.get(position));
     }
 
     @Override
-    public int getItemCount() { return glasses.size(); }
+    public int getItemCount() { return figures.size(); }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        private GlassView glassView;
+        private FigureView figureView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            glassView = itemView.findViewById(R.id.glass_item);
+            figureView = itemView.findViewById(R.id.figure_item);
         }
 
-        public GlassView getGlassView() {
-            return glassView;
+        public FigureView getFigureView() {
+            return figureView;
         }
     }
 }

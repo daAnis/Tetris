@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,20 +16,34 @@ import java.util.ArrayList;
 public class AdminActivity extends AppCompatActivity {
 
     private static ArrayList<Glass> glasses = new ArrayList<>();
+    private static GlassAdapter glassAdapter;
 
+    private static ArrayList<Figure> figures = new ArrayList<>();
+    private static FigureAdapter figureAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
+        glasses.add(new Glass(5, 10, Color.BLACK, 0.1, 0.1));
+        glasses.add(new Glass(5, 10, Color.BLUE, 0.1, 0.1));
+
         //отобразить список стаканов
         RecyclerView glassList = findViewById(R.id.glass_list);
-        GlassAdapter glassAdapter = new GlassAdapter(glasses);
+        glassAdapter = new GlassAdapter(this, glasses);
         glassList.setAdapter(glassAdapter);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         glassList.setLayoutManager(manager);
         glassList.setHasFixedSize(false);
+
+        //отобразить список фигур
+        RecyclerView figuresList = findViewById(R.id.figure_list);
+        figureAdapter = new FigureAdapter(this, figures);
+        figuresList.setAdapter(figureAdapter);
+        RecyclerView.LayoutManager manager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        figuresList.setLayoutManager(manager1);
+        figuresList.setHasFixedSize(false);
 
         //добавить стакан
         ImageView addGlass = findViewById(R.id.iw);
@@ -58,10 +74,24 @@ public class AdminActivity extends AppCompatActivity {
     public static void saveGlass(Glass glass) {
         //todo передача стакана в бд
         glasses.add(glass);
+        glassAdapter.notifyDataSetChanged();
     }
 
     public static void deleteGlass(Glass glass) {
         //todo удаление стакана из бд
         glasses.remove(glass);
+        glassAdapter.notifyDataSetChanged();
+    }
+
+    public static void saveFigure(Figure figure) {
+        //todo передача фигуры в бд
+        figures.add(figure);
+        figureAdapter.notifyDataSetChanged();
+    }
+
+    public static void deleteFigure(Figure figure) {
+        //todo удаление фигуры из бд
+        figures.remove(figure);
+        figureAdapter.notifyDataSetChanged();
     }
 }

@@ -11,10 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Стаканы"
-        android:textAlignment="center"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/text_color"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -27,7 +28,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/glass_list"
             android:layout_width="match_parent"
-            android:layout_height="125dp"/>
+            android:layout_height="wrap_content"/>
         <ImageView
             android:id="@+id/iw"
             android:layout_width="wrap_content"
@@ -44,7 +45,7 @@
             android:layout_marginRight="5dp"
             android:textColor="@color/text_color"
             android:layout_below="@id/glass_list"
-            android:layout_alignRight="@id/glass_list"/>
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
@@ -56,9 +57,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Фигуры и уровни"
-        android:textAlignment="center"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/text_color" />
+        android:textColor="@color/text_color"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -71,7 +73,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/figure_list"
             android:layout_width="match_parent"
-            android:layout_height="125dp"/>
+            android:layout_height="wrap_content"/>
         <ImageView
             android:id="@+id/iw1"
             android:layout_width="wrap_content"
@@ -88,7 +90,7 @@
             android:layout_marginRight="5dp"
             android:textColor="@color/text_color"
             android:layout_below="@id/figure_list"
-            android:layout_alignRight="@id/figure_list"/>
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
@@ -100,9 +102,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Звуковое сопровождение"
-        android:textAlignment="center"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/text_color" />
+        android:textColor="@color/text_color"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -132,6 +135,6 @@
             android:layout_marginRight="5dp"
             android:textColor="@color/text_color"
             android:layout_below="@id/music_list"
-            android:layout_alignRight="@id/music_list"/>
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 </LinearLayout>

@@ -18,8 +18,6 @@ public class FigureView extends View {
     private Rect rect;
     private Paint paint;
 
-    private Figure figure;
-
     private byte [][] filled;
 
     public FigureView(Context context) {
@@ -43,6 +41,16 @@ public class FigureView extends View {
                 filled[i][j] = 0;
             }
         }
+    }
+
+    public void setFigure(Figure figure) {
+        byte [][] a = figure.getStructure();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                filled[i][j] = a[i][j];
+            }
+        }
+        postInvalidate();
     }
 
     @Override
