@@ -8,12 +8,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class AdminActivity extends AppCompatActivity {
+public class AdminActivity extends AppCompatActivity implements FigureAdapter.OnFigureListener {
 
     private static ArrayList<Glass> glasses = new ArrayList<>();
     private static GlassAdapter glassAdapter;
@@ -28,6 +29,7 @@ public class AdminActivity extends AppCompatActivity {
 
         glasses.add(new Glass(5, 10, Color.BLACK, 0.1, 0.1));
         glasses.add(new Glass(5, 10, Color.BLUE, 0.1, 0.1));
+        figures.add(new Figure(5, new byte[][]{{0,0,0,0},{0,1,1,0},{0,1,0,0},{0,0,0,0}}));
 
         //отобразить список стаканов
         RecyclerView glassList = findViewById(R.id.glass_list);
@@ -39,7 +41,7 @@ public class AdminActivity extends AppCompatActivity {
 
         //отобразить список фигур
         RecyclerView figuresList = findViewById(R.id.figure_list);
-        figureAdapter = new FigureAdapter(this, figures);
+        figureAdapter = new FigureAdapter(this, figures, this);
         figuresList.setAdapter(figureAdapter);
         RecyclerView.LayoutManager manager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         figuresList.setLayoutManager(manager1);
@@ -91,7 +93,19 @@ public class AdminActivity extends AppCompatActivity {
 
     public static void deleteFigure(Figure figure) {
         //todo удаление фигуры из бд
-        figures.remove(figure);
+        for (Figure f : figures) {
+            if (figure.equals(f)) {
+                figures.remove(f);
+                break;
+            }
+        }
         figureAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFigureClick(int position) {
+        Intent intent = new Intent(this, FigureActivity.class);
+        intent.putExtra(Figure.class.getSimpleName(), figures.get(position));
+        startActivity(intent);
     }
 }

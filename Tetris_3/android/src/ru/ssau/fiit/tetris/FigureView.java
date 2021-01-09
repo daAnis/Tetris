@@ -13,20 +13,22 @@ import androidx.annotation.Nullable;
 
 public class FigureView extends View {
 
-    private final int CELL_SIZE = 150;
+    protected int CELL_SIZE;
 
     private Rect rect;
     private Paint paint;
 
-    private byte [][] filled;
+    protected byte [][] filled;
 
     public FigureView(Context context) {
         super(context);
+        CELL_SIZE = 40;
         init(context, null);
     }
 
     public FigureView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        CELL_SIZE = 40;
         init(context, attrs);
     }
 
@@ -42,6 +44,8 @@ public class FigureView extends View {
             }
         }
     }
+
+    public byte [][] getStructure() { return filled; }
 
     public void setFigure(Figure figure) {
         byte [][] a = figure.getStructure();
@@ -70,20 +74,5 @@ public class FigureView extends View {
                 canvas.drawRect(rect, paint);
             }
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        boolean result = super.onTouchEvent(event);
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int i = (int) Math.floor(event.getX() / CELL_SIZE);
-            int j = (int) Math.floor(event.getY() / CELL_SIZE);
-            if (filled[i][j] == 0)
-                filled[i][j] = 1;
-            else filled[i][j] = 0;
-            postInvalidate();
-            return true;
-        }
-        return result;
     }
 }

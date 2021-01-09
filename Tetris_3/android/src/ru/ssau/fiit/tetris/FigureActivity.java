@@ -32,7 +32,7 @@ public class FigureActivity extends AppCompatActivity {
         //получить параметры фигуры и задать значения полей
         Bundle arguments = getIntent().getExtras();
         if (arguments != null)
-            figure = (Figure) arguments.getSerializable(Glass.class.getSimpleName());
+            figure = (Figure) arguments.getSerializable(Figure.class.getSimpleName());
         if (figure != null) {
             figureView.setFigure(figure);
             numberPicker.setValue(figure.getLevel());
@@ -48,6 +48,7 @@ public class FigureActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //todo проверка на уникальность
                 //todo проверка на целостность
+                figure.setStructure(figureView.getStructure());
                 AdminActivity.saveFigure(figure);
                 finish();
             }
@@ -58,6 +59,7 @@ public class FigureActivity extends AppCompatActivity {
         deleteFigure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                figure.setStructure(figureView.getStructure());
                 AdminActivity.deleteFigure(figure);
                 finish();
             }
