@@ -1,5 +1,7 @@
 package ru.ssau.fiit.tetris;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class Glass implements Serializable {
@@ -58,5 +60,15 @@ public class Glass implements Serializable {
 
     public void setPoints_k(double points_k) {
         this.points_k = points_k;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        Glass glass = (Glass) obj;
+        return (this.getWidth() == glass.getWidth()) &&
+                (this.getHeight() == glass.getHeight()) &&
+                (this.getColor() == glass.getColor()) &&
+                (this.getSpeed_k() == glass.getSpeed_k()) &&
+                (this.getPoints_k() == glass.getPoints_k());
     }
 }

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="50dp"
-    android:layout_height="70dp"
+    android:layout_width="130dp"
+    android:layout_height="205dp"
+    android:background="@drawable/edit_text_style"
+    android:layout_margin="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ru.ssau.fiit.tetris.GlassView
         android:id="@+id/glass_item"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="5dp"/>
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>

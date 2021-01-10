@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,13 +38,11 @@ public class FigureAdapter extends RecyclerView.Adapter<FigureAdapter.MyViewHold
 
     public static class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
         private FigureView figureView;
-        private RelativeLayout layout;
         private OnFigureListener onFigureListener;
 
         public MyViewHolder(@NonNull View itemView, OnFigureListener onFigureListener) {
             super(itemView);
             figureView = itemView.findViewById(R.id.figure_item);
-            layout = itemView.findViewById(R.id.figure_item_layout);
             this.onFigureListener = onFigureListener;
             itemView.setOnClickListener(this);
         }

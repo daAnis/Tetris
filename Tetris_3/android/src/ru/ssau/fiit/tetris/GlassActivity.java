@@ -4,13 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.IllegalFormatException;
 
 import top.defaults.colorpicker.ColorObserver;
 import top.defaults.colorpicker.ColorPickerView;
@@ -32,7 +33,6 @@ public class GlassActivity extends AppCompatActivity {
         Bundle arguments = getIntent().getExtras();
         if (arguments != null)
             glass = (Glass) arguments.getSerializable(Glass.class.getSimpleName());
-
         init();
     }
 
@@ -55,11 +55,11 @@ public class GlassActivity extends AppCompatActivity {
 
         //начальная инициализация полей
         if (glass != null) {
-            width_editable.setText(glass.getWidth());
-            height_editable.setText(glass.getHeight());
+            width_editable.setText(String.format("%d", glass.getWidth()));
+            height_editable.setText(String.format("%d", glass.getHeight()));
             colorPickerView.setInitialColor(glass.getColor());
-            speed_editable.setText(String.format("%s", glass.getSpeed_k()));
-            points_editable.setText(String.format("%s", glass.getPoints_k()));
+            speed_editable.setText(String.format("%.2f", glass.getSpeed_k()));
+            points_editable.setText(String.format("%.2f", glass.getPoints_k()));
             glassView.setGlass(glass);
         } else {
             glass = new Glass();
@@ -70,18 +70,30 @@ public class GlassActivity extends AppCompatActivity {
         Button drawGlass = findViewById(R.id.draw_glass);
         drawGlass.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) throws IllegalFormatException {
                 try {
                     width = Integer.parseInt(width_editable.getText().toString());
+                    if ((width < 5) || (width > 15)) {
+                        throw new Exception();
+                    }
                 } catch (NumberFormatException e) {
                     Toast.makeText(GlassActivity.this, "Ширина задана неверно!", Toast.LENGTH_LONG).show();
+                    return;
+                } catch (Exception e) {
+                    Toast.makeText(GlassActivity.this, "Ширина должна находиться в пределах между 5 и 15!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 glass.setWidth(width);
                 try {
                     height = Integer.parseInt(height_editable.getText().toString());
+                    if ((height < 5) || (height > 25)) {
+                        throw new Exception();
+                    }
                 } catch (NumberFormatException e) {
                     Toast.makeText(GlassActivity.this, "Высота задана неверно!", Toast.LENGTH_LONG).show();
+                    return;
+                } catch (Exception e) {
+                    Toast.makeText(GlassActivity.this, "Высота должна находиться в пределах между 5 и 25!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 glass.setHeight(height);

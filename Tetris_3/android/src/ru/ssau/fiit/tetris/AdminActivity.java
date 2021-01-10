@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class AdminActivity extends AppCompatActivity implements FigureAdapter.OnFigureListener {
+public class AdminActivity extends AppCompatActivity implements FigureAdapter.OnFigureListener, GlassAdapter.OnGlassListener {
 
     private static ArrayList<Glass> glasses = new ArrayList<>();
     private static GlassAdapter glassAdapter;
@@ -27,13 +27,13 @@ public class AdminActivity extends AppCompatActivity implements FigureAdapter.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        glasses.add(new Glass(5, 10, Color.BLACK, 0.1, 0.1));
-        glasses.add(new Glass(5, 10, Color.BLUE, 0.1, 0.1));
+        glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
+        glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
         figures.add(new Figure(5, new byte[][]{{0,0,0,0},{0,1,1,0},{0,1,0,0},{0,0,0,0}}));
 
         //отобразить список стаканов
         RecyclerView glassList = findViewById(R.id.glass_list);
-        glassAdapter = new GlassAdapter(this, glasses);
+        glassAdapter = new GlassAdapter(this, glasses, this);
         glassList.setAdapter(glassAdapter);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         glassList.setLayoutManager(manager);
@@ -81,7 +81,12 @@ public class AdminActivity extends AppCompatActivity implements FigureAdapter.On
 
     public static void deleteGlass(Glass glass) {
         //todo удаление стакана из бд
-        glasses.remove(glass);
+        for (Glass g : glasses) {
+            if (glass.equals(g)) {
+                glasses.remove(g);
+                break;
+            }
+        }
         glassAdapter.notifyDataSetChanged();
     }
 
@@ -106,6 +111,13 @@ public class AdminActivity extends AppCompatActivity implements FigureAdapter.On
     public void onFigureClick(int position) {
         Intent intent = new Intent(this, FigureActivity.class);
         intent.putExtra(Figure.class.getSimpleName(), figures.get(position));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onGlassClick(int position) {
+        Intent intent = new Intent(this, GlassActivity.class);
+        intent.putExtra(Glass.class.getSimpleName(), glasses.get(position));
         startActivity(intent);
     }
 }

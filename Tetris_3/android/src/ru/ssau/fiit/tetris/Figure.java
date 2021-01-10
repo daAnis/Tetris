@@ -3,7 +3,6 @@ package ru.ssau.fiit.tetris;
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 public class Figure implements Serializable {
     private int level;

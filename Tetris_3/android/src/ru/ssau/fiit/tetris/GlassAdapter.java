@@ -14,17 +14,19 @@ public class GlassAdapter extends RecyclerView.Adapter <GlassAdapter.MyViewHolde
 
     private LayoutInflater inflater;
     private List<Glass> glasses;
+    private OnGlassListener onGlassListener;
 
-    public GlassAdapter(Context context, List <Glass> glasses) {
+    public GlassAdapter(Context context, List <Glass> glasses, OnGlassListener onGlassListener) {
         this.glasses = glasses;
         this.inflater = LayoutInflater.from(context);
+        this.onGlassListener = onGlassListener;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.glass_item, parent, false);
-        return new GlassAdapter.MyViewHolder(view);
+        return new GlassAdapter.MyViewHolder(view, onGlassListener);
     }
 
     @Override
@@ -35,16 +37,26 @@ public class GlassAdapter extends RecyclerView.Adapter <GlassAdapter.MyViewHolde
     @Override
     public int getItemCount() { return glasses.size(); }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private GlassView glassView;
+        private OnGlassListener onGlassListener;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, OnGlassListener onGlassListener) {
             super(itemView);
             glassView = itemView.findViewById(R.id.glass_item);
+            this.onGlassListener = onGlassListener;
+            itemView.setOnClickListener(this);
         }
 
         public GlassView getGlassView() {
             return glassView;
         }
+
+        @Override
+        public void onClick(View view) { onGlassListener.onGlassClick(getAdapterPosition()); }
+    }
+
+    public interface OnGlassListener {
+        void onGlassClick(int position);
     }
 }
