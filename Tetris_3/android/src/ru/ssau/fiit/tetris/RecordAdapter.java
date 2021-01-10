@@ -31,8 +31,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull RecordAdapter.MyViewHolder holder, int position) {
         Record record = records.get(position);
-        holder.pointsView.setText(record.getPoints());
-        holder.timeView.setText(record.getTime());
+        holder.getPointsView().setText(record.getPoints());
+        holder.getTimeView().setText(record.getTime());
     }
 
     @Override
@@ -41,11 +41,16 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHold
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView pointsView, timeView;
+        private TextView pointsView, timeView;
+
         public MyViewHolder (View view) {
             super(view);
             pointsView = view.findViewById(R.id.points);
             timeView = view.findViewById(R.id.time);
         }
+
+        public TextView getPointsView() { return pointsView; }
+
+        public TextView getTimeView() { return timeView; }
     }
 }

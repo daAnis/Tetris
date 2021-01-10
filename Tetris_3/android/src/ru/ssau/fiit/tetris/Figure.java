@@ -31,9 +31,7 @@ public class Figure implements Serializable {
     public void setStructure(byte[][] structure) {
         this.structure = new byte[4][4];
         for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                this.structure[i][j] = structure[i][j];
-            }
+            System.arraycopy(structure[i], 0, this.structure[i], 0, 4);
         }
     }
 

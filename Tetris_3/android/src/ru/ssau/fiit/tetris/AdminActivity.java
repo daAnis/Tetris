@@ -14,7 +14,8 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class AdminActivity extends AppCompatActivity implements FigureAdapter.OnFigureListener, GlassAdapter.OnGlassListener {
+public class AdminActivity extends AppCompatActivity
+        implements FigureAdapter.OnFigureListener, GlassAdapter.OnGlassListener, AudioAdapter.OnAudioListener {
 
     private static ArrayList<Glass> glasses = new ArrayList<>();
     private static GlassAdapter glassAdapter;
@@ -113,6 +114,18 @@ public class AdminActivity extends AppCompatActivity implements FigureAdapter.On
         figureAdapter.notifyDataSetChanged();
     }
 
+    public static void deleteAudio(Audio audio) {
+        //todo удаление аудио из бд
+        for (Audio a : audios) {
+            if (audio.equals(a)) {
+                audios.remove(a);
+                break;
+            }
+        }
+        audioAdapter.notifyDataSetChanged();
+    }
+
+    //событие нажатия на фигуру
     @Override
     public void onFigureClick(int position) {
         Intent intent = new Intent(this, FigureActivity.class);
@@ -120,10 +133,21 @@ public class AdminActivity extends AppCompatActivity implements FigureAdapter.On
         startActivity(intent);
     }
 
+    //событие нажатия на стакан
     @Override
     public void onGlassClick(int position) {
         Intent intent = new Intent(this, GlassActivity.class);
         intent.putExtra(Glass.class.getSimpleName(), glasses.get(position));
         startActivity(intent);
+    }
+
+    @Override
+    public void onAudioPlay(int position) {
+
+    }
+
+    @Override
+    public void onAudioDelete(int position) {
+
     }
 }

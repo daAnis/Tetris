@@ -2,6 +2,8 @@ package ru.ssau.fiit.tetris;
 
 import android.net.Uri;
 
+import androidx.annotation.Nullable;
+
 public class Audio {
     private String name;
     private Uri uri;
@@ -20,4 +22,10 @@ public class Audio {
     public Uri getUri() { return uri; }
 
     public void setUri(Uri uri) { this.uri = uri; }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        Audio audio = (Audio) obj;
+        return this.getName().equals(audio.getName());
+    }
 }
