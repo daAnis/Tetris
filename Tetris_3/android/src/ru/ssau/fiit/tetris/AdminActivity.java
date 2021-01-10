@@ -22,6 +22,9 @@ public class AdminActivity extends AppCompatActivity implements FigureAdapter.On
     private static ArrayList<Figure> figures = new ArrayList<>();
     private static FigureAdapter figureAdapter;
 
+    private static ArrayList<Audio> audios = new ArrayList<>();
+    private static AudioAdapter audioAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,9 @@ public class AdminActivity extends AppCompatActivity implements FigureAdapter.On
         RecyclerView.LayoutManager manager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         figuresList.setLayoutManager(manager1);
         figuresList.setHasFixedSize(false);
+
+        //отобразить список аудио
+        RecyclerView audioList = findViewById(R.id.music_list);
 
         //добавить стакан
         ImageView addGlass = findViewById(R.id.iw);
