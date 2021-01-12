@@ -7,15 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 
 public class AdminActivity extends AppCompatActivity
-        implements FigureAdapter.OnFigureListener, GlassAdapter.OnGlassListener, AudioAdapter.OnAudioListener {
+        implements FigureAdapter.OnFigureListener, GlassAdapter.OnGlassListener, AudioAdapter.OnAudioDeleteListener {
 
     private static ArrayList<Glass> glasses = new ArrayList<>();
     private static GlassAdapter glassAdapter;
@@ -34,6 +32,9 @@ public class AdminActivity extends AppCompatActivity
         glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
         glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
         figures.add(new Figure(5, new byte[][]{{0,0,0,0},{0,1,1,0},{0,1,0,0},{0,0,0,0}}));
+        audios.add(new Audio());
+        audios.add(new Audio("#2"));
+        audios.add(new Audio("Эта песня"));
 
         //отобразить список стаканов
         RecyclerView glassList = findViewById(R.id.glass_list);
@@ -53,6 +54,11 @@ public class AdminActivity extends AppCompatActivity
 
         //отобразить список аудио
         RecyclerView audioList = findViewById(R.id.music_list);
+        audioAdapter = new AudioAdapter(this, audios, this);
+        audioList.setAdapter(audioAdapter);
+        RecyclerView.LayoutManager manager2 = new LinearLayoutManager(this);
+        audioList.setLayoutManager(manager2);
+        audioList.setHasFixedSize(false);
 
         //добавить стакан
         ImageView addGlass = findViewById(R.id.iw);
@@ -141,13 +147,9 @@ public class AdminActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    @Override
-    public void onAudioPlay(int position) {
-
-    }
-
+    //событие удаления аудио
     @Override
     public void onAudioDelete(int position) {
-
+        AdminActivity.deleteAudio(audios.get(position));
     }
 }

@@ -10,6 +10,10 @@ public class Audio {
 
     public Audio() { }
 
+    public Audio(String name) {
+        this.name = name;
+    }
+
     public Audio(String name, Uri uri) {
         this.name = name;
         this.uri = uri;
