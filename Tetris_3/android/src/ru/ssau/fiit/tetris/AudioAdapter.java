@@ -13,32 +13,34 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
 import java.util.List;
 
 public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder> {
-    private LayoutInflater inflater;
+    protected LayoutInflater inflater;
     private List<Audio> audioList;
-    private OnAudioDeleteListener onAudioDeleteListener;
+    private OnAudioListener onAudioListener;
 
-    public AudioAdapter(Context context, List<Audio> audioList, OnAudioDeleteListener onAudioDeleteListener) {
+    public AudioAdapter(Context context, List<Audio> audioList, OnAudioListener onAudioListener) {
         this.audioList = audioList;
         this.inflater = LayoutInflater.from(context);
-        this.onAudioDeleteListener = onAudioDeleteListener;
+        this.onAudioListener = onAudioListener;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.audio_item, parent, false);
-        return new MyViewHolder(view, onAudioDeleteListener);
+        return new MyViewHolder(view, onAudioListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
-        Audio audio = audioList.get(position);
+        final Audio audio = audioList.get(position);
         holder.getNameView().setText(audio.getName());
 
-        final MediaPlayer mediaPlayer = MediaPlayer.create(inflater.getContext(), R.raw.test);
+        //final MediaPlayer mediaPlayer = MediaPlayer.create(inflater.getContext(), R.raw.test);
+        final MediaPlayer mediaPlayer = new MediaPlayer();
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
@@ -48,17 +50,35 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
             }
         };
 
+        //начать воспроизведение
         holder.getPlayView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 holder.getPlayView().setVisibility(View.GONE);
                 holder.getPauseView().setVisibility(View.VISIBLE);
-                mediaPlayer.start();
+
+                try {
+                    mediaPlayer.setDataSource(audio.getUri().getPath());
+                    mediaPlayer.prepareAsync();
+                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer player) {
+                            player.start();
+                            holder.getSeekView().setMax(mediaPlayer.getDuration());
+                            handler.postDelayed(runnable, 0);
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                /*mediaPlayer.start();
                 holder.getSeekView().setMax(mediaPlayer.getDuration());
-                handler.postDelayed(runnable, 0);
+                handler.postDelayed(runnable, 0);*/
             }
         });
 
+        //приостановить воспроизведение
         holder.getPauseView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,11 +89,12 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
             }
         });
 
+        //перемотка
         holder.getSeekView().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    mediaPlayer.seekTo(progress);
+                    //mediaPlayer.seekTo(progress);
                 }
             }
 
@@ -84,12 +105,13 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
 
+        //воспроизведение завершено
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 holder.getPauseView().setVisibility(View.GONE);
                 holder.getPlayView().setVisibility(View.VISIBLE);
-                mediaPlayer.seekTo(0);
+                //mediaPlayer.seekTo(0);
             }
         });
     }
@@ -101,10 +123,12 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
         private TextView nameView;
         private ImageView playView, pauseView, deleteView;
         private SeekBar seekView;
-        private OnAudioDeleteListener onAudioDeleteListener;
+        private OnAudioListener onAudioListener;
+        private View view;
 
-        public MyViewHolder(@NonNull View itemView, final OnAudioDeleteListener onAudioDeleteListener) {
+        public MyViewHolder(@NonNull View itemView, final OnAudioListener onAudioListener) {
             super(itemView);
+            view = itemView;
             nameView = itemView.findViewById(R.id.audio_name);
             playView = itemView.findViewById(R.id.audio_play);
             pauseView = itemView.findViewById(R.id.audio_pause);
@@ -112,7 +136,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
             seekView = itemView.findViewById(R.id.audio_seek);
 
             //удаление аудио
-            this.onAudioDeleteListener = onAudioDeleteListener;
+            this.onAudioListener = onAudioListener;
             deleteView.setOnClickListener(this);
         }
 
@@ -124,11 +148,18 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
 
         public SeekBar getSeekView() { return seekView; }
 
+        public ImageView getDeleteView() { return deleteView; }
+
+        public View getView() { return view; }
+
+        public OnAudioListener getOnAudioListener() { return onAudioListener; }
+
         @Override
-        public void onClick(View view) { onAudioDeleteListener.onAudioDelete(getAdapterPosition()); }
+        public void onClick(View view) { onAudioListener.onAudioDelete(getAdapterPosition()); }
     }
 
-    public interface OnAudioDeleteListener {
+    public interface OnAudioListener {
         void onAudioDelete(int position);
+        void onAudioClick(int position);
     }
 }

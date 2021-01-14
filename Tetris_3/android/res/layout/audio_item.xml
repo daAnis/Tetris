@@ -6,7 +6,7 @@
     android:layout_margin="5dp">
     <TextView
         android:id="@+id/audio_name"
-        android:layout_width="wrap_content"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:textColor="@color/text_color"
         android:text="Аудио"/>
@@ -22,23 +22,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/play_button"
-        android:layout_toRightOf="@id/audio_name"
-        android:layout_marginLeft="20dp"/>
+        android:layout_below="@id/audio_name"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="15dp"/>
     <ImageView
         android:id="@+id/audio_pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/pause_button"
-        android:layout_toRightOf="@id/audio_name"
-        android:layout_marginLeft="20dp"
+        android:layout_below="@id/audio_name"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="15dp"
         android:visibility="gone"/>
     <SeekBar
         android:id="@+id/audio_seek"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="24dp"
         android:progressDrawable="@drawable/seekbar_style"
         android:thumb="@drawable/custom_thumb"
         android:splitTrack="false"
         android:layout_below="@id/audio_name"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp"
+        android:layout_alignParentRight="true"/>
 </RelativeLayout>

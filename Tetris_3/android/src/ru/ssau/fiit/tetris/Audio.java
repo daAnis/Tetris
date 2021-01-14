@@ -4,7 +4,9 @@ import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
-public class Audio {
+import java.io.Serializable;
+
+public class Audio implements Serializable {
     private String name;
     private Uri uri;
 

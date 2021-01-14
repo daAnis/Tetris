@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.ssau.fiit.tetris">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
     <application
         android:allowBackup="true"
         android:appCategory="game"
@@ -11,7 +9,8 @@
         android:isGame="true"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".FigureActivity"></activity>
+        <activity android:name=".GameStartActivity"></activity>
+        <activity android:name=".FigureActivity" />
         <activity android:name=".GlassActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".WebViewActivity" />
@@ -36,5 +35,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/GdxTheme" />
     </application>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

@@ -4,18 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class PlayerActivity extends AppCompatActivity {
     private TextView userName;
     private static int score = -1;
+    private static long time;
     private ArrayList <Record> records = new ArrayList<>();
 
     @Override
@@ -45,7 +49,15 @@ public class PlayerActivity extends AppCompatActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(PlayerActivity.this, AndroidLauncher.class));
+                startActivity(new Intent(PlayerActivity.this, GameStartActivity.class));
+            }
+        });
+
+        ImageView imageView = findViewById(R.id.iw);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PlayerActivity.this, GameStartActivity.class));
             }
         });
 
@@ -68,16 +80,22 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     //получить текущий результат
-    public static void setScore(int score) {
+    public static void setScore(int score, long time) {
         PlayerActivity.score = score;
+        PlayerActivity.time = time;
     }
 
     //возвращаемся в меню после игры
+    @SuppressLint("DefaultLocale")
     @Override
     protected void onResume() {
         super.onResume();
         if (score != -1)
-            records.add(new Record(score + "", "123"));
+            records.add(new Record(score + "",
+                    String.format(" %02d : %02d ",
+                            TimeUnit.MILLISECONDS.toMinutes(time),
+                            TimeUnit.MILLISECONDS.toSeconds(time) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)))));
     }
 
     //назад

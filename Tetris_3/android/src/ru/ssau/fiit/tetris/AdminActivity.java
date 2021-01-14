@@ -1,11 +1,14 @@
 package ru.ssau.fiit.tetris;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,7 +16,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 public class AdminActivity extends AppCompatActivity
-        implements FigureAdapter.OnFigureListener, GlassAdapter.OnGlassListener, AudioAdapter.OnAudioDeleteListener {
+        implements FigureAdapter.OnFigureListener, GlassAdapter.OnGlassListener, AudioAdapter.OnAudioListener {
 
     private static ArrayList<Glass> glasses = new ArrayList<>();
     private static GlassAdapter glassAdapter;
@@ -32,9 +35,12 @@ public class AdminActivity extends AppCompatActivity
         glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
         glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
         figures.add(new Figure(5, new byte[][]{{0,0,0,0},{0,1,1,0},{0,1,0,0},{0,0,0,0}}));
-        audios.add(new Audio());
-        audios.add(new Audio("#2"));
-        audios.add(new Audio("Эта песня"));
+        //audios.add(new Audio());
+        //audios.add(new Audio("#2"));
+        //audios.add(new Audio("Эта песня"));
+        audios.add(new Audio("Звуки природы", getRawUri("test")));
+        audios.add(new Audio("Звуки моря"));
+        audios.add(new Audio("Звуки дождя"));
 
         //отобразить список стаканов
         RecyclerView glassList = findViewById(R.id.glass_list);
@@ -77,6 +83,24 @@ public class AdminActivity extends AppCompatActivity
                 startActivity(new Intent(AdminActivity.this, FigureActivity.class));
             }
         });
+
+        //добавить аудио
+        ImageView addAudio = findViewById(R.id.iw2);
+        addAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+                        .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_RINGTONE)
+                        .putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Выберите мелодию")
+                        .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
+                        .putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+                startActivityForResult(intent, 3);*/
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("audio/*");
+                startActivityForResult(intent, 3);
+            }
+        });
     }
 
     //назад
@@ -84,6 +108,40 @@ public class AdminActivity extends AppCompatActivity
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /*if (resultCode == Activity.RESULT_OK && requestCode == 3)
+        {
+            Uri toneUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+
+            if (toneUri != null)
+            {
+                saveAudio(new Audio(toneUri.toString(), toneUri));
+                //this.chosenRingtone = toneUri.toString();
+            }
+        }*/
+        switch (requestCode) {
+            case 3: {
+                if (resultCode == RESULT_OK)
+                {
+                    final Cursor cursor = getContentResolver().query( data.getData(), null, null, null, null );
+                    cursor.moveToFirst();
+                    final String filePath = cursor.getString(0);
+                    cursor.close();
+                    saveAudio(new Audio(filePath, data.getData()));
+                    //Uri chosenImageUri = data.getData();
+                }
+                break;
+            }
+        }
+    }
+
+    private Uri getRawUri(String filename) {
+        return Uri.parse("android.resource://" + getPackageName() + "/raw/" + filename);
+        //return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + File.pathSeparator + File.separator + getPackageName() + "/raw/" + filename);
     }
 
     public static void saveGlass(Glass glass) {
@@ -120,6 +178,12 @@ public class AdminActivity extends AppCompatActivity
         figureAdapter.notifyDataSetChanged();
     }
 
+    public static void saveAudio(Audio audio) {
+        //todo добавление аудио в бд
+        audios.add(audio);
+        audioAdapter.notifyDataSetChanged();
+    }
+
     public static void deleteAudio(Audio audio) {
         //todo удаление аудио из бд
         for (Audio a : audios) {
@@ -152,4 +216,7 @@ public class AdminActivity extends AppCompatActivity
     public void onAudioDelete(int position) {
         AdminActivity.deleteAudio(audios.get(position));
     }
+
+    @Override
+    public void onAudioClick(int position) { }
 }

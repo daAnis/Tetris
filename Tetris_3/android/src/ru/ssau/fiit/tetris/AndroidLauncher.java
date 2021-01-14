@@ -28,8 +28,8 @@ public class AndroidLauncher extends AndroidApplication implements IActivityRequ
 	}
 
 	@Override
-	public void closeGame(int result) {
-		PlayerActivity.setScore(result);
-		handler.sendEmptyMessage(result);
+	public void closeGame(int score, long time) {
+		PlayerActivity.setScore(score, time);
+		handler.sendEmptyMessage(score);
 	}
 }

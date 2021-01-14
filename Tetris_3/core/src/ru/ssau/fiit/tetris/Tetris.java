@@ -52,6 +52,7 @@ public class Tetris extends ApplicationAdapter {
 	private BitmapFont scoreFont;
 	private GameStage gameStage;
 	private int score;
+	private long time;
 	private SoftKey lastPressedSoftKey;
 	private String string;
 
@@ -124,6 +125,9 @@ public class Tetris extends ApplicationAdapter {
 		controlGroup.addActor(pause);
 		controlGroup.addActor(stop);
 		stage.addActor(controlGroup);
+
+		score = 0;
+		time = TimeUtils.millis();
 	}
 
 	public void resize (int width, int height) {
@@ -147,7 +151,7 @@ public class Tetris extends ApplicationAdapter {
 				if (string.compareTo("Pause") == 0)
 					isGameGoing = true;
 				else
-					myRequestHandler.closeGame(score);
+					myRequestHandler.closeGame(score, TimeUtils.timeSinceMillis(time));
 				/*else if (string.compareTo("Game stopped") == 0)
 
 				else if (string.compareTo("You lose") == 0)

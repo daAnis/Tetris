@@ -27,16 +27,14 @@ public class GameStage extends Actor {
         }
     }
 
-    /**
-     * Set the given blocks on stage.
-     * @return number of rows erased, if any.
-     */
+    //Устанавливаем фигуры на экране
+    //Возвращаем количество строк, которые были удалены
     public int setBlocks(int[][] blocks) {
         for (int[] block: blocks) {
             isFilled[block[INDEX_COLUMN]][block[INDEX_ROW]] = true;
         }
 
-        // Check if any row is filled
+        //Проверяем, заполнена ли строка
         Set<Integer> rowsToDelete = new HashSet<Integer>();
         for (int[] block: blocks) {
             if (isRowFilled(block[INDEX_ROW])) {
@@ -51,7 +49,7 @@ public class GameStage extends Actor {
             if (rowsToDelete.contains(r)) {
                 delta++;
             }
-            // Copy the row
+            //Копируем строку
             for (int c = 0;  c < NUM_COLUMNS; c++) {
                 isFilled[c][r] = r + delta >= NUM_ROWS ? false : isFilled[c][r + delta];
             }
@@ -71,9 +69,8 @@ public class GameStage extends Actor {
         return false;
     }
 
-    /**
-     * Returns if given blocks are inside the stage and has no conflict with existing blocks.
-     */
+
+    //Проверяем модно ли устанавливать фигуры
     public boolean canPlaceBlocks(int[][] blocks) {
         for (int[] block: blocks) {
             int row = block[INDEX_ROW];
@@ -93,19 +90,19 @@ public class GameStage extends Actor {
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
         shapeRenderer.translate(getX(), getY(), 0);
 
-        // Border
+        //Граница
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.rect(0, 0, CELL_SIZE * NUM_COLUMNS + 2, CELL_SIZE * NUM_ROWS + 2);
         shapeRenderer.end();
 
-        // Background
+        //Фон
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         float r = 167f / 255f, g = 138f / 255f, b = 177f /  255f;
         shapeRenderer.setColor(new Color(r, g, b, 1));
         shapeRenderer.rect(1, 1, CELL_SIZE * NUM_COLUMNS, CELL_SIZE * NUM_ROWS);
 
-        //shapeRenderer.setColor(Color.GRAY);
+        //Устанавливаем цвет упавшим фигурам
         float rr = 181f / 255f, gr = 79f / 255f, br = 135f / 255f;
         shapeRenderer.setColor(new Color(rr, gr, br, 1));
         //shapeRenderer.setColor(Tetromino.tetromoniColor());
