@@ -53,7 +53,10 @@ public class GlassAdapter extends RecyclerView.Adapter <GlassAdapter.MyViewHolde
         }
 
         @Override
-        public void onClick(View view) { onGlassListener.onGlassClick(getAdapterPosition()); }
+        public void onClick(View view) {
+            onGlassListener.onGlassClick(getAdapterPosition());
+            view.setBackgroundResource(R.drawable.selected_item);
+        }
     }
 
     public interface OnGlassListener {

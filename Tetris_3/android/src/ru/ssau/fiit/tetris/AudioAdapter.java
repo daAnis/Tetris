@@ -13,7 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.IOException;
 import java.util.List;
 
 public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder> {
@@ -39,8 +38,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
         final Audio audio = audioList.get(position);
         holder.getNameView().setText(audio.getName());
 
-        //final MediaPlayer mediaPlayer = MediaPlayer.create(inflater.getContext(), R.raw.test);
-        final MediaPlayer mediaPlayer = new MediaPlayer();
+        final MediaPlayer mediaPlayer = MediaPlayer.create(inflater.getContext(), audio.getUri());
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
@@ -56,25 +54,9 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
             public void onClick(View view) {
                 holder.getPlayView().setVisibility(View.GONE);
                 holder.getPauseView().setVisibility(View.VISIBLE);
-
-                try {
-                    mediaPlayer.setDataSource(audio.getUri().getPath());
-                    mediaPlayer.prepareAsync();
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer player) {
-                            player.start();
-                            holder.getSeekView().setMax(mediaPlayer.getDuration());
-                            handler.postDelayed(runnable, 0);
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                /*mediaPlayer.start();
+                mediaPlayer.start();
                 holder.getSeekView().setMax(mediaPlayer.getDuration());
-                handler.postDelayed(runnable, 0);*/
+                handler.postDelayed(runnable, 0);
             }
         });
 
@@ -94,7 +76,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    //mediaPlayer.seekTo(progress);
+                    mediaPlayer.seekTo(progress);
                 }
             }
 
@@ -111,7 +93,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
             public void onCompletion(MediaPlayer mediaPlayer) {
                 holder.getPauseView().setVisibility(View.GONE);
                 holder.getPlayView().setVisibility(View.VISIBLE);
-                //mediaPlayer.seekTo(0);
+                mediaPlayer.seekTo(0);
             }
         });
     }
@@ -141,17 +123,11 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
         }
 
         public TextView getNameView() { return nameView; }
-
         public ImageView getPlayView() { return playView; }
-
         public ImageView getPauseView() { return pauseView; }
-
         public SeekBar getSeekView() { return seekView; }
-
         public ImageView getDeleteView() { return deleteView; }
-
         public View getView() { return view; }
-
         public OnAudioListener getOnAudioListener() { return onAudioListener; }
 
         @Override

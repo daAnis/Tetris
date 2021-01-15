@@ -39,8 +39,8 @@ public class AdminActivity extends AppCompatActivity
         //audios.add(new Audio("#2"));
         //audios.add(new Audio("Эта песня"));
         audios.add(new Audio("Звуки природы", getRawUri("test")));
-        audios.add(new Audio("Звуки моря"));
-        audios.add(new Audio("Звуки дождя"));
+        //audios.add(new Audio("Звуки моря"));
+        //audios.add(new Audio("Звуки дождя"));
 
         //отобразить список стаканов
         RecyclerView glassList = findViewById(R.id.glass_list);
@@ -89,13 +89,6 @@ public class AdminActivity extends AppCompatActivity
         addAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
-                        .putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_RINGTONE)
-                        .putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Выберите мелодию")
-                        .putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
-                        .putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
-                startActivityForResult(intent, 3);*/
-
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("audio/*");
                 startActivityForResult(intent, 3);
@@ -113,16 +106,6 @@ public class AdminActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /*if (resultCode == Activity.RESULT_OK && requestCode == 3)
-        {
-            Uri toneUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-
-            if (toneUri != null)
-            {
-                saveAudio(new Audio(toneUri.toString(), toneUri));
-                //this.chosenRingtone = toneUri.toString();
-            }
-        }*/
         switch (requestCode) {
             case 3: {
                 if (resultCode == RESULT_OK)
@@ -132,16 +115,15 @@ public class AdminActivity extends AppCompatActivity
                     final String filePath = cursor.getString(0);
                     cursor.close();
                     saveAudio(new Audio(filePath, data.getData()));
-                    //Uri chosenImageUri = data.getData();
                 }
                 break;
             }
         }
     }
 
+    //метод для получения Uri из файлов ресурсов
     private Uri getRawUri(String filename) {
         return Uri.parse("android.resource://" + getPackageName() + "/raw/" + filename);
-        //return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + File.pathSeparator + File.separator + getPackageName() + "/raw/" + filename);
     }
 
     public static void saveGlass(Glass glass) {
