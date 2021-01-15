@@ -58,8 +58,10 @@ public class Tetris extends ApplicationAdapter {
 
 	private IActivityRequestHandler myRequestHandler;
 
-	public Tetris (IActivityRequestHandler handler) {
+	public Tetris (IActivityRequestHandler handler, int columns, int rows) {
 		myRequestHandler = handler;
+		Constants.setStageHeight(CELL_SIZE * rows);
+		Constants.setStageWidth(CELL_SIZE * columns);
 	}
 
 	public static void renderBlock(ShapeRenderer renderer, int column, int row) {

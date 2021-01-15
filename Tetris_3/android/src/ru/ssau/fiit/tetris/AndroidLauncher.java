@@ -22,7 +22,10 @@ public class AndroidLauncher extends AndroidApplication implements IActivityRequ
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useAccelerometer = false;
 		config.useCompass = false;
-		initialize(new Tetris(this), config);
+		Bundle arguments = getIntent().getExtras();
+		if (arguments == null) return;
+		Glass glass = (Glass) arguments.getSerializable(Glass.class.getSimpleName());
+		initialize(new Tetris(this, glass.getWidth(), glass.getHeight()), config);
 	}
 
 	@Override

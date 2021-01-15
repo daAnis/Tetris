@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder> {
     protected LayoutInflater inflater;
-    private List<Audio> audioList;
+    protected List<Audio> audioList;
     private OnAudioListener onAudioListener;
 
     public AudioAdapter(Context context, List<Audio> audioList, OnAudioListener onAudioListener) {
@@ -37,6 +37,8 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         final Audio audio = audioList.get(position);
         holder.getNameView().setText(audio.getName());
+
+        if (audio.getUri() == null) return;
 
         final MediaPlayer mediaPlayer = MediaPlayer.create(inflater.getContext(), audio.getUri());
         final Handler handler = new Handler();

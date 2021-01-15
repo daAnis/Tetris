@@ -70,7 +70,7 @@ public class GameStage extends Actor {
     }
 
 
-    //Проверяем модно ли устанавливать фигуры
+    //Проверяем можно ли устанавливать фигуры
     public boolean canPlaceBlocks(int[][] blocks) {
         for (int[] block: blocks) {
             int row = block[INDEX_ROW];

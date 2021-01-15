@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -103,6 +104,7 @@ public class AdminActivity extends AppCompatActivity
         finish();
     }
 
+    //возврат из системы устройства в приложение
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -112,7 +114,7 @@ public class AdminActivity extends AppCompatActivity
                 {
                     final Cursor cursor = getContentResolver().query( data.getData(), null, null, null, null );
                     cursor.moveToFirst();
-                    final String filePath = cursor.getString(0);
+                    final String filePath = cursor.getString(2);
                     cursor.close();
                     saveAudio(new Audio(filePath, data.getData()));
                 }
@@ -143,8 +145,13 @@ public class AdminActivity extends AppCompatActivity
         glassAdapter.notifyDataSetChanged();
     }
 
-    public static void saveFigure(Figure figure) {
+    public static void saveFigure(Figure figure) throws Exception {
         //todo передача фигуры в бд
+        for (Figure f : figures) {
+            if (figure.equals(f)) {
+                throw new Exception("Фигура не уникальна!");
+            }
+        }
         figures.add(figure);
         figureAdapter.notifyDataSetChanged();
     }

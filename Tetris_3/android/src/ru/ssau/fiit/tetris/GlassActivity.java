@@ -2,6 +2,7 @@ package ru.ssau.fiit.tetris;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -36,6 +37,7 @@ public class GlassActivity extends AppCompatActivity {
         init();
     }
 
+    @SuppressLint("DefaultLocale")
     private void init() {
         glassView = findViewById(R.id.new_glass);
         width_editable = findViewById(R.id.w);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 public class FigureActivity extends AppCompatActivity {
     private FigureView figureView;
@@ -17,6 +18,9 @@ public class FigureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_figure);
 
         figureView = findViewById(R.id.new_figure);
+
+        Button saveFigure = findViewById(R.id.save_figure);
+        Button deleteFigure = findViewById(R.id.cancel_figure);
 
         //изменение уровня
         NumberPicker numberPicker = findViewById(R.id.level);
@@ -39,23 +43,31 @@ public class FigureActivity extends AppCompatActivity {
         } else {
             figure = new Figure();
             numberPicker.setValue(1);
+            deleteFigure.setVisibility(View.GONE);
         }
 
         //сохранение изменений
-        Button saveFigure = findViewById(R.id.save_figure);
         saveFigure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo проверка на уникальность
-                //todo проверка на целостность
                 figure.setStructure(figureView.getStructure());
-                AdminActivity.saveFigure(figure);
+                //проверка на целостность
+                if (figure.hasDiscontinuities()) {
+                    Toast.makeText(FigureActivity.this, "В структуре присутствуют разрывы!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                try {
+                    //проверка на уникальность и сохранение
+                    AdminActivity.saveFigure(figure);
+                } catch (Exception e) {
+                    Toast.makeText(FigureActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    return;
+                }
                 finish();
             }
         });
 
         //удаление
-        Button deleteFigure = findViewById(R.id.cancel_figure);
         deleteFigure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

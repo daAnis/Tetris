@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,7 +19,7 @@ public class GameStartActivity extends AppCompatActivity
         implements GlassAdapter.OnGlassListener, AudioAdapter.OnAudioListener {
 
     private static ArrayList<Glass> glasses = new ArrayList<>();
-    private static GlassAdapter glassAdapter;
+    private static GlassPlayerAdapter glassAdapter;
 
     private static ArrayList<Audio> audios = new ArrayList<>();
     private static AudioPlayerAdapter audioAdapter;
@@ -30,15 +32,18 @@ public class GameStartActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_start);
 
+        glass = null;
+        audio = null;
+
         glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
         glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
-        audios.add(new Audio("Звуки природы"));
-        audios.add(new Audio("Звуки моря"));
-        audios.add(new Audio("Звуки дождя"));
+        audios.add(new Audio("Без звука"));
+        audios.add(new Audio("Звуки природы", Uri.parse("android.resource://" + getPackageName() + "/raw/test")));
+        audios.add(new Audio("Звуки природы1", Uri.parse("android.resource://" + getPackageName() + "/raw/test")));
 
         //отобразить список стаканов
         RecyclerView glassList = findViewById(R.id.glass_list_player);
-        glassAdapter = new GlassAdapter(this, glasses, this);
+        glassAdapter = new GlassPlayerAdapter(this, glasses, this);
         glassList.setAdapter(glassAdapter);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         glassList.setLayoutManager(manager);
@@ -57,10 +62,19 @@ public class GameStartActivity extends AppCompatActivity
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (glass == null) {
+                    Toast.makeText(GameStartActivity.this, "Выберите стакан", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (audio == null) {
+                    Toast.makeText(GameStartActivity.this, "Выберите аудио", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Intent intent = new Intent(GameStartActivity.this, AndroidLauncher.class);
                 intent.putExtra(Glass.class.getSimpleName(), glass);
                 intent.putExtra(Audio.class.getSimpleName(), audio);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -70,11 +84,11 @@ public class GameStartActivity extends AppCompatActivity
 
     @Override
     public void onAudioClick(int position) {
-
+        audio = audios.get(position);
     }
 
     @Override
     public void onGlassClick(int position) {
-
+        glass = glasses.get(position);
     }
 }

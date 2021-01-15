@@ -12,6 +12,8 @@ public class Glass implements Serializable {
     private double speed_k;
     private double points_k;
 
+    private boolean selected;
+
     public Glass() { }
 
     public Glass(int width, int height, int color, double speed_k, double points_k) {
@@ -61,6 +63,10 @@ public class Glass implements Serializable {
     public void setPoints_k(double points_k) {
         this.points_k = points_k;
     }
+
+    public boolean isSelected() { return selected; }
+
+    public void setSelected(boolean selected) { this.selected = selected; }
 
     @Override
     public boolean equals(@Nullable Object obj) {

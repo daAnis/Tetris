@@ -12,8 +12,8 @@ import java.util.List;
 
 public class GlassAdapter extends RecyclerView.Adapter <GlassAdapter.MyViewHolder> {
 
-    private LayoutInflater inflater;
-    private List<Glass> glasses;
+    protected LayoutInflater inflater;
+    protected List<Glass> glasses;
     private OnGlassListener onGlassListener;
 
     public GlassAdapter(Context context, List <Glass> glasses, OnGlassListener onGlassListener) {
@@ -40,22 +40,23 @@ public class GlassAdapter extends RecyclerView.Adapter <GlassAdapter.MyViewHolde
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private GlassView glassView;
         private OnGlassListener onGlassListener;
+        private View view;
 
         public MyViewHolder(@NonNull View itemView, OnGlassListener onGlassListener) {
             super(itemView);
+            view = itemView;
             glassView = itemView.findViewById(R.id.glass_item);
             this.onGlassListener = onGlassListener;
             itemView.setOnClickListener(this);
         }
 
-        public GlassView getGlassView() {
-            return glassView;
-        }
+        public GlassView getGlassView() { return glassView; }
+        public OnGlassListener getOnGlassListener() { return onGlassListener; }
+        public View getView() { return view; }
 
         @Override
         public void onClick(View view) {
             onGlassListener.onGlassClick(getAdapterPosition());
-            view.setBackgroundResource(R.drawable.selected_item);
         }
     }
 
