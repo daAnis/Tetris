@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "739955223840",
+    "project_id": "tetris-96fc5",
+    "storage_bucket": "tetris-96fc5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739955223840:android:7e9b0461c44df204517b45",
+        "android_client_info": {
+          "package_name": "ru.ssau.fiit.tetris"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739955223840-1fk4dmbnkgaq5hf2vj2euv4kgtmlq3td.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJWX0gj0K-xoL8p8B0QwMqdWcrKiJMkkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739955223840-1fk4dmbnkgaq5hf2vj2euv4kgtmlq3td.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

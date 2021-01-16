@@ -2,6 +2,7 @@ package ru.ssau.fiit.tetris;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,9 +39,10 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
         final Audio audio = audioList.get(position);
         holder.getNameView().setText(audio.getName());
 
-        if (audio.getUri() == null) return;
+        //if (audio.getUri() == null) return;
+        if (audio.getUriSerializable().equals("")) return;
 
-        final MediaPlayer mediaPlayer = MediaPlayer.create(inflater.getContext(), audio.getUri());
+        final MediaPlayer mediaPlayer = MediaPlayer.create(inflater.getContext(), Uri.parse(audio.getUriSerializable()));
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override

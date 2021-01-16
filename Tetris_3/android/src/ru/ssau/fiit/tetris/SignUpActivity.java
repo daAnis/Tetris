@@ -1,5 +1,6 @@
 package ru.ssau.fiit.tetris;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -12,10 +13,19 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import ru.ssau.fiit.tetris.db.DBHelper;
+
 public class SignUpActivity extends AppCompatActivity {
-    EditText usernameET;
-    EditText passwordET;
-    EditText passwordRepeatET;
+    private EditText usernameET;
+    private EditText passwordET;
+    private EditText passwordRepeatET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String password = passwordET.getText().toString();
+                final String password = passwordET.getText().toString();
                 String passwordRepeat = passwordRepeatET.getText().toString();
                 if (!password.equals(passwordRepeat)) {
                     Toast.makeText(SignUpActivity.this, "Пароли не совпадают!", Toast.LENGTH_LONG).show();
@@ -41,23 +51,32 @@ public class SignUpActivity extends AppCompatActivity {
                             "Длина пароля должна находиться в пределах между 5 и 10 символами!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                String username = usernameET.getText().toString();
+                final String username = usernameET.getText().toString();
                 if ((username.length() < 4)||(username.length() > 12)) {
                     Toast.makeText(SignUpActivity.this,
                             "Длина логина должна находиться в пределах между 4 и 12 символами!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                for (String u : UserInformation.users.keySet()) {
-                    if (username.equals(u)) {
-                        Toast.makeText(SignUpActivity.this, "Такое имя пользователя уже занято!", Toast.LENGTH_LONG).show();
-                        return;
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+                Query checkUser = reference.orderByChild("username").equalTo(username);
+
+                checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.exists()) {
+                            User newUser = new User(username, password);
+                            DBHelper.addUserToDataBase(newUser);
+                            Intent intent = new Intent(SignUpActivity.this, PlayerActivity.class);
+                            intent.putExtra(User.class.getSimpleName(), newUser);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "Такой пользователь уже зарегистрирован!", Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
-                UserInformation.users.put(username, password);
-                Intent intent = new Intent(SignUpActivity.this, PlayerActivity.class);
-                intent.putExtra("username", username);
-                startActivity(intent);
-                finish();
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) { }
+                });
             }
         });
     }

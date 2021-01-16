@@ -20,13 +20,13 @@ public class AudioPlayerAdapter extends AudioAdapter {
         //удаление кнопки удаления аудио
         holder.getDeleteView().setVisibility(View.GONE);
         //удаление управления проигрыванием при отсутствии аудио
-        if (audioList.get(position).getUri() == null) {
+        /*if (audioList.get(position).getUri() == null) {
             holder.getPlayView().setVisibility(View.GONE);
             holder.getSeekView().setVisibility(View.GONE);
         } else {
             holder.getPlayView().setVisibility(View.VISIBLE);
             holder.getSeekView().setVisibility(View.VISIBLE);
-        }
+        }*/
         //событие выбора аудио
         holder.getView().setOnClickListener(new View.OnClickListener() {
             @Override

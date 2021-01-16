@@ -20,6 +20,7 @@ public class PlayerActivity extends AppCompatActivity {
     private static int score = -1;
     private static long time;
     private ArrayList <Record> records = new ArrayList<>();
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,8 @@ public class PlayerActivity extends AppCompatActivity {
         userName = findViewById(R.id.user_name);
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
-            String result = arguments.get("username").toString();
-            userName.setText(result);
+            user = (User) arguments.getSerializable(User.class.getSimpleName());
+            userName.setText(user.getUsername());
         }
 
         //насторойки

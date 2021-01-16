@@ -1,15 +1,14 @@
 package ru.ssau.fiit.tetris;
 
-import android.net.Uri;
-
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 
 public class Audio implements Serializable {
+    private String audioId;
+
     private String name;
     private String uriSerializable;
-    private transient Uri uri;
 
     public Audio() { }
 
@@ -17,17 +16,23 @@ public class Audio implements Serializable {
         this.name = name;
     }
 
-    public Audio(String name, Uri uri) {
+    public Audio(String name, String uriSerializable) {
         this.name = name;
-        this.uri = uri;
-        uriSerializable = uri.toString();
+        this.uriSerializable = uriSerializable;
+    }
+
+    public Audio(String audioId, String name, String uriSerializable) {
+        this.audioId = audioId;
+        this.name = name;
+        this.uriSerializable = uriSerializable;
     }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public Uri getUri() { return uri; }
-    public void setUri(Uri uri) { this.uri = uri; }
     public String getUriSerializable() { return uriSerializable; }
+    public String getAudioId() { return audioId; }
+    public void setAudioId(String audioId) { this.audioId = audioId; }
+    public void setUriSerializable(String uriSerializable) { this.uriSerializable = uriSerializable; }
 
     @Override
     public boolean equals(@Nullable Object obj) {

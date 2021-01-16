@@ -1,5 +1,6 @@
 package ru.ssau.fiit.tetris;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,33 +14,42 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+
+import ru.ssau.fiit.tetris.db.DBHelper;
 
 public class AdminActivity extends AppCompatActivity
         implements FigureAdapter.OnFigureListener, GlassAdapter.OnGlassListener, AudioAdapter.OnAudioListener {
 
+    private RecyclerView glassList;
     private static ArrayList<Glass> glasses = new ArrayList<>();
     private static GlassAdapter glassAdapter;
 
     private static ArrayList<Figure> figures = new ArrayList<>();
     private static FigureAdapter figureAdapter;
 
+    private RecyclerView audioList;
     private static ArrayList<Audio> audios = new ArrayList<>();
     private static AudioAdapter audioAdapter;
+
+    private DatabaseReference dataTableGlasses;
+    private DatabaseReference dataTableFigures;
+    private DatabaseReference dataTableAudios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        init();
 
         //отобразить список стаканов
-        RecyclerView glassList = findViewById(R.id.glass_list);
-        glassAdapter = new GlassAdapter(this, glasses, this);
-        glassList.setAdapter(glassAdapter);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        glassList.setLayoutManager(manager);
-        glassList.setHasFixedSize(false);
+        glassList = findViewById(R.id.glass_list);
+        dataTableGlasses = FirebaseDatabase.getInstance().getReference("glasses");
 
         //отобразить список фигур
         RecyclerView figuresList = findViewById(R.id.figure_list);
@@ -50,12 +60,8 @@ public class AdminActivity extends AppCompatActivity
         figuresList.setHasFixedSize(false);
 
         //отобразить список аудио
-        RecyclerView audioList = findViewById(R.id.music_list);
-        audioAdapter = new AudioAdapter(this, audios, this);
-        audioList.setAdapter(audioAdapter);
-        RecyclerView.LayoutManager manager2 = new LinearLayoutManager(this);
-        audioList.setLayoutManager(manager2);
-        audioList.setHasFixedSize(false);
+        audioList = findViewById(R.id.music_list);
+        dataTableAudios = FirebaseDatabase.getInstance().getReference("audios");
 
         //добавить стакан
         ImageView addGlass = findViewById(R.id.iw);
@@ -87,6 +93,53 @@ public class AdminActivity extends AppCompatActivity
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        dataTableGlasses.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                glasses.clear();
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    Glass glass = snap.getValue(Glass.class);
+                    glasses.add(glass);
+                }
+                glassAdapter = new GlassAdapter(AdminActivity.this, glasses, AdminActivity.this);
+                glassList.setAdapter(glassAdapter);
+                RecyclerView.LayoutManager manager = new LinearLayoutManager(AdminActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                glassList.setLayoutManager(manager);
+                glassList.setHasFixedSize(false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        dataTableAudios.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                audios.clear();
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    Audio audio = snap.getValue(Audio.class);
+                    audios.add(audio);
+                }
+                audioAdapter = new AudioAdapter(AdminActivity.this, audios, AdminActivity.this);
+                audioList.setAdapter(audioAdapter);
+                RecyclerView.LayoutManager manager2 = new LinearLayoutManager(AdminActivity.this);
+                audioList.setLayoutManager(manager2);
+                audioList.setHasFixedSize(false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     //назад
     @Override
     public void onBackPressed() {
@@ -106,38 +159,24 @@ public class AdminActivity extends AppCompatActivity
                     cursor.moveToFirst();
                     final String fileName = cursor.getString(2);
                     cursor.close();
-                    saveAudio(new Audio(fileName, data.getData()));
+                    saveAudio(new Audio(fileName, data.getData().toString()));
                 }
                 break;
             }
         }
     }
 
-    //метод для получения Uri из файлов ресурсов
-    private Uri getRawUri(String filename) {
-        return Uri.parse("android.resource://" + getPackageName() + "/raw/" + filename);
-    }
-
     public static void saveGlass(Glass glass) throws Exception {
-        //todo передача стакана в бд
         for (Glass g : glasses) {
             if (glass.equals(g)) {
                 throw new Exception("Стакан не уникален!");
             }
         }
-        glasses.add(glass);
-        glassAdapter.notifyDataSetChanged();
+        DBHelper.addGlassToDataBase(glass);
     }
 
     public static void deleteGlass(Glass glass) {
-        //todo удаление стакана из бд
-        for (Glass g : glasses) {
-            if (glass.equals(g)) {
-                glasses.remove(g);
-                break;
-            }
-        }
-        glassAdapter.notifyDataSetChanged();
+        DBHelper.deleteGlassFromDataBase(glass);
     }
 
     public static void saveFigure(Figure figure) throws Exception {
@@ -163,20 +202,11 @@ public class AdminActivity extends AppCompatActivity
     }
 
     public static void saveAudio(Audio audio) {
-        //todo добавление аудио в бд
-        audios.add(audio);
-        audioAdapter.notifyDataSetChanged();
+        DBHelper.addAudioToDataBase(audio);
     }
 
     public static void deleteAudio(Audio audio) {
-        //todo удаление аудио из бд
-        for (Audio a : audios) {
-            if (audio.equals(a)) {
-                audios.remove(a);
-                break;
-            }
-        }
-        audioAdapter.notifyDataSetChanged();
+        DBHelper.deleteAudioFromDataBase(audio);
     }
 
     //событие нажатия на фигуру
@@ -203,13 +233,4 @@ public class AdminActivity extends AppCompatActivity
 
     @Override
     public void onAudioClick(int position) { }
-
-    private void init() {
-        glasses.add(new Glass(10, 12, Color.YELLOW, 0.1, 0.1));
-        glasses.add(new Glass(7, 9, Color.RED, 0.1, 0.1));
-        glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
-        glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
-        audios.add(new Audio("Без звука"));
-        audios.add(new Audio("Вариант 1", Uri.parse("android.resource://" + getPackageName() + "/raw/test")));
-    }
 }

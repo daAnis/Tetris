@@ -69,6 +69,19 @@
             android:maxHeight="31px"
             android:maxWidth="43px"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/sign_up_button"
+            android:text="Зарегистрироваться"
+            android:layout_below="@id/editTextTextPassword"
+            android:textColor="@color/text_color"
+            android:background="@drawable/edit_text_style"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"/>
+
     </RelativeLayout>
 
 </RelativeLayout>

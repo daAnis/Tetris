@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import java.io.Serializable;
 
 public class Figure implements Serializable {
+    private String figureId;
+
     private int level;
     private byte [][] structure;
 
@@ -18,14 +20,20 @@ public class Figure implements Serializable {
         this.structure = structure;
     }
 
+    public Figure(String figureId, int level, byte[][] structure) {
+        this.figureId = figureId;
+        this.level = level;
+        this.structure = structure;
+    }
+
+    public String getFigureId() { return figureId; }
+    public void setFigureId(String figureId) { this.figureId = figureId; }
     public int getLevel() {
         return level;
     }
-
     public void setLevel(int level) {
         this.level = level;
     }
-
     public byte[][] getStructure() { return structure; }
 
     public void setStructure(byte[][] structure) {
