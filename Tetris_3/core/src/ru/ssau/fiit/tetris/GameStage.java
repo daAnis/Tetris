@@ -15,6 +15,7 @@ import static ru.ssau.fiit.tetris.Constants.INDEX_ROW;
 public class GameStage extends Actor {
     public static int NUM_COLUMNS;
     public static int NUM_ROWS;
+    public static int COLOUR;
 
     private boolean[][] isFilled = new boolean[NUM_COLUMNS][NUM_ROWS];
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -98,19 +99,34 @@ public class GameStage extends Actor {
 
         //Фон
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        float r = 167f / 255f, g = 138f / 255f, b = 177f /  255f;
-        shapeRenderer.setColor(new Color(r, g, b, 1));
+        float rf = 167f / 255f, gf = 138f / 255f, bf = 177f /  255f;
+        shapeRenderer.setColor(new Color(rf, gf, bf, 1));
         shapeRenderer.rect(1, 1, CELL_SIZE * NUM_COLUMNS, CELL_SIZE * NUM_ROWS);
 
         //Устанавливаем цвет упавшим фигурам
         float rr = 181f / 255f, gr = 79f / 255f, br = 135f / 255f;
         shapeRenderer.setColor(new Color(rr, gr, br, 1));
-        //shapeRenderer.setColor(Tetromino.tetromoniColor());
         for (int i = 0; i < NUM_COLUMNS; i++) {
             for (int j = 0; j < NUM_ROWS; j++) {
                 if (isFilled[i][j]) {
                     shapeRenderer.rect(i * CELL_SIZE + 1, j * CELL_SIZE + 1, CELL_SIZE, CELL_SIZE);
                 }
+            }
+        }
+        shapeRenderer.end();
+
+        //Клетки
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        String hexColor = String.format("#%06X", (0xFFFFFF & COLOUR));
+        long hex = Long.decode(hexColor);
+        float a = (hex & 0xFF000000L) >> 24;
+        float r = (hex & 0xFF0000L) >> 16;
+        float g = (hex & 0xFF00L) >> 8;
+        float b = (hex & 0xFFL);
+        shapeRenderer.setColor(new Color(r / 255f, g / 255f, b / 255f, a / 255f));
+        for (int i = 0; i < NUM_COLUMNS; i++) {
+            for (int j = 0; j < NUM_ROWS; j++) {
+                shapeRenderer.rect(i * CELL_SIZE + 1, j * CELL_SIZE + 1, CELL_SIZE, CELL_SIZE);
             }
         }
         shapeRenderer.end();

@@ -26,6 +26,7 @@ import static ru.ssau.fiit.tetris.Constants.STAGE_HEIGHT;
 import static ru.ssau.fiit.tetris.Constants.STAGE_WIDTH;
 import static ru.ssau.fiit.tetris.GameStage.NUM_COLUMNS;
 import static ru.ssau.fiit.tetris.GameStage.NUM_ROWS;
+import static ru.ssau.fiit.tetris.GameStage.COLOUR;
 
 public class Tetris extends ApplicationAdapter {
 	private static final int STAGE_START_X = 25;
@@ -61,13 +62,14 @@ public class Tetris extends ApplicationAdapter {
 	private byte resultDisplay;
 
 	public Tetris (IActivityRequestHandler handler,
-				   int columns, int rows, double pointsUp, double speedUp,
+				   int columns, int rows, double pointsUp, double speedUp, int colour,
 				   boolean nextFigureShow, byte resultDisplay) {
 		myRequestHandler = handler;
 
 		NUM_COLUMNS = columns;
 		NUM_ROWS = rows;
 		CELL_SIZE = (STAGE_WIDTH / columns) * 32 / 48;
+		COLOUR = colour;
 
 		this.pointsUp = pointsUp + 1.0;
 		this.speedUp = speedUp + 1.0;

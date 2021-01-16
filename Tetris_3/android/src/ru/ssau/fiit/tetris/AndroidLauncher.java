@@ -44,7 +44,7 @@ public class AndroidLauncher extends AndroidApplication implements IActivityRequ
 		else if (SettingsActivity.results_show == R.id.rb_time) id = 1;
 		else id = 2;
 		initialize(new Tetris(this,
-				glass.getWidth(), glass.getHeight(), glass.getPoints_k(), glass.getSpeed_k(),
+				glass.getWidth(), glass.getHeight(), glass.getPoints_k(), glass.getSpeed_k(), glass.getColor(),
 				SettingsActivity.nextF_show, id), config);
 	}
 

@@ -33,23 +33,23 @@ public class SignUpActivity extends AppCompatActivity {
                 String password = passwordET.getText().toString();
                 String passwordRepeat = passwordRepeatET.getText().toString();
                 if (!password.equals(passwordRepeat)) {
-                    Toast.makeText(SignUpActivity.this, "Пароли не уникальны!", Toast.LENGTH_LONG);
+                    Toast.makeText(SignUpActivity.this, "Пароли не совпадают!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if ((password.length() < 5)||(password.length() > 10)) {
                     Toast.makeText(SignUpActivity.this,
-                            "Длина пароля должна находиться в пределах между 5 и 10 символами!", Toast.LENGTH_LONG);
+                            "Длина пароля должна находиться в пределах между 5 и 10 символами!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 String username = usernameET.getText().toString();
                 if ((username.length() < 4)||(username.length() > 12)) {
                     Toast.makeText(SignUpActivity.this,
-                            "Длина логина должна находиться в пределах между 4 и 12 символами!", Toast.LENGTH_LONG);
+                            "Длина логина должна находиться в пределах между 4 и 12 символами!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 for (String u : UserInformation.users.keySet()) {
                     if (username.equals(u)) {
-                        Toast.makeText(SignUpActivity.this, "Такое имя пользователя уже занято!", Toast.LENGTH_LONG);
+                        Toast.makeText(SignUpActivity.this, "Такое имя пользователя уже занято!", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }

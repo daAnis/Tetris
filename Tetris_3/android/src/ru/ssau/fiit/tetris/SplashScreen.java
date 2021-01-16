@@ -1,7 +1,6 @@
 package ru.ssau.fiit.tetris;
 
 import android.content.Intent;
-import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,14 +12,5 @@ public class SplashScreen extends AppCompatActivity {
 
         startActivity(new Intent(this, MainActivity.class));
         finish();
-
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SplashScreen.this, AndroidLauncher.class));
-                finish();
-            }
-        }, 3000);*/
-
     }
 }

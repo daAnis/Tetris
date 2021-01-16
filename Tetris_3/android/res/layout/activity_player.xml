@@ -73,33 +73,15 @@
                 android:layout_marginLeft="40dp"
                 android:layout_below="@id/settings"
                 android:layout_alignParentRight="true"/>
-            <ImageView
-                android:id="@+id/iw1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/play_button"
-                android:layout_below="@id/line2"
-                android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@id/tw1"/>
-            <TextView
-                android:id="@+id/tw1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Продолжить"
-                android:textColor="@color/text_color"
-                android:layout_below="@id/line2"
-                android:layout_marginRight="5dp"
-                android:layout_alignParentRight="true"/>
             <ImageButton
                 android:id="@+id/info_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/help_button"
                 android:background="@null"
-                android:layout_below="@id/tw1"
-                android:layout_marginTop="5dp"
+                android:layout_below="@id/line2"
                 android:layout_marginRight="5dp"
-                android:layout_alignRight="@id/tw1"
+                android:layout_alignRight="@id/settings"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </LinearLayout>

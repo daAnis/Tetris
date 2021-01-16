@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
     EditText usernameET;
@@ -43,6 +44,9 @@ public class LoginActivity extends AppCompatActivity {
                     intent.putExtra("username", login);
                     startActivity(intent);
                     finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Такого пользователя не существует!", Toast.LENGTH_LONG).show();
+                    return;
                 }
             }
         });
