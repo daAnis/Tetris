@@ -33,7 +33,7 @@ public class AndroidLauncher extends AndroidApplication implements IActivityRequ
 		//получаем выбранный аудио фрагмент
 		Audio audio = (Audio) arguments.getSerializable(Audio.class.getSimpleName());
 		//запускаем его на воспроизведение
-		if ((audio.getUri() != null)&&(SettingsActivity.musicOnOff_show)) {
+		if ((audio.getUriSerializable() != null)&&(SettingsActivity.musicOnOff_show)) {
 			mediaPlayer = MediaPlayer.create(this, Uri.parse(audio.getUriSerializable()));
 			mediaPlayer.start();
 			mediaPlayer.setLooping(true);

@@ -34,21 +34,17 @@ public class SettingsActivity extends AppCompatActivity {
         nextF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (nextF_show)
-                    nextF_show = false;
-                else nextF_show = true;
+                nextF_show = nextF.isChecked();
             }
         });
 
         //звуковое сопровождение
-        CheckBox musicOnOff = findViewById(R.id.music_on_off);
+        final CheckBox musicOnOff = findViewById(R.id.music_on_off);
         musicOnOff.setChecked(musicOnOff_show);
         musicOnOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (musicOnOff_show)
-                    musicOnOff_show = false;
-                else musicOnOff_show = true;
+                musicOnOff_show = musicOnOff.isChecked();
             }
         });
 

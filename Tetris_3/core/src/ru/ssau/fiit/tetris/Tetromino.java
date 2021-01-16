@@ -14,11 +14,11 @@ public class Tetromino {
     private static final Type[] TYPE = Type.values();
     private static Random random = new Random();
 
-    // Position of "origin" of this tetrimino
+    //Начальная позиция
     private int originColumn;
     private int originRow;
     private final Type type;
-    // Position of blocks relative to origin of this block
+    //Позиция относительно начальной позиции
     private int[][] relativePositions;
     private final int[][] relativePositionsOriginal;
     private final float[] originDelta;
@@ -26,9 +26,12 @@ public class Tetromino {
     private static float r, g, b;
 
     public static Tetromino getInstance() {
+        //случайно определяем вид фигуры
         Tetromino tetromino = new Tetromino(TYPE[random.nextInt(TYPE.length)]);
+        //устанавливаем точку падения
         tetromino.initPosition();
 
+        //случайно определяем цвет
         Random rand = new Random();
         r = rand.nextFloat();
         g = rand.nextFloat();
@@ -57,13 +60,12 @@ public class Tetromino {
         return getBlocks(relativePositions);
     }
 
-    /**
-     * Move current block down.
-     */
+    //переместить ниже
     public void fall() {
         originRow--;
     }
 
+    //перевернуть
     public void rotate(GameStage gameStage) {
         if (this.type == Type.SQUARE) {
             return;
@@ -79,6 +81,7 @@ public class Tetromino {
         }
     }
 
+    //влево
     public void moveToLeft(GameStage gameStage) {
         int[][] blocks = getBlocks();
         for (int[] block: blocks) {
@@ -89,6 +92,7 @@ public class Tetromino {
         }
     }
 
+    //вправо
     public void moveToRight(GameStage gameStage) {
         int[][] blocks = getBlocks();
         for (int[] block: blocks) {
@@ -99,17 +103,16 @@ public class Tetromino {
         }
     }
 
+    //отрисовка
     public void render(ShapeRenderer renderer) {
-        //float r = 181f / 255f, g = 79f / 255f, b = 135f / 255f;
-        //renderer.setColor(new Color(r, g, b, 1));
         renderer.setColor(new Color(r, g, b, 1));
         for (int[] block: getBlocks()) {
             Tetris.renderBlock(renderer, block[INDEX_COLUMN], block[INDEX_ROW]);
         }
     }
 
+    //отрисовка следующей фигуры
     public void render(ShapeRenderer renderer, int startX, int startY, int boxSize) {
-        //float r = 181f / 255f, g = 79f / 255f, b = 135f / 255f;
         renderer.setColor(new Color(r, g, b, 1));
         int originX = startX + boxSize * 2;
         int originY = startY + boxSize * 2;
@@ -121,6 +124,7 @@ public class Tetromino {
         }
     }
 
+    //
     private int[][] getBlocks(int[][] relativePositions) {
         return new int[][] {
                 new int[] {originColumn + relativePositions[0][INDEX_COLUMN], originRow + relativePositions[0][INDEX_ROW]},
@@ -155,6 +159,7 @@ public class Tetromino {
         private int[][] relativePositions;
         private final float[] originDelta;
 
+        //задаем относительные позиции и коэффициенты сжатия для отрисовки следующей фигуры
         Type(int[][] relativePositions, float[] originDelta) {
             this.relativePositions = relativePositions;
             this.originDelta = originDelta;
