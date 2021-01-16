@@ -122,8 +122,12 @@ public class GlassActivity extends AppCompatActivity {
                     return;
                 }
                 glass.setPoints_k(points);
-                //todo проверка на уникальность
-                AdminActivity.saveGlass(glass);
+                try {
+                    AdminActivity.saveGlass(glass);
+                } catch (Exception e) {
+                    Toast.makeText(GlassActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    return;
+                }
                 finish();
             }
         });

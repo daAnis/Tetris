@@ -33,15 +33,10 @@ public class AdminActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
+        /*glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
         glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
         figures.add(new Figure(5, new byte[][]{{0,0,0,0},{0,1,1,0},{0,1,0,0},{0,0,0,0}}));
-        //audios.add(new Audio());
-        //audios.add(new Audio("#2"));
-        //audios.add(new Audio("Эта песня"));
-        audios.add(new Audio("Звуки природы", getRawUri("test")));
-        //audios.add(new Audio("Звуки моря"));
-        //audios.add(new Audio("Звуки дождя"));
+        audios.add(new Audio("Звуки природы", getRawUri("test")));*/
 
         //отобразить список стаканов
         RecyclerView glassList = findViewById(R.id.glass_list);
@@ -128,8 +123,13 @@ public class AdminActivity extends AppCompatActivity
         return Uri.parse("android.resource://" + getPackageName() + "/raw/" + filename);
     }
 
-    public static void saveGlass(Glass glass) {
+    public static void saveGlass(Glass glass) throws Exception {
         //todo передача стакана в бд
+        for (Glass g : glasses) {
+            if (glass.equals(g)) {
+                throw new Exception("Стакан не уникален!");
+            }
+        }
         glasses.add(glass);
         glassAdapter.notifyDataSetChanged();
     }

@@ -12,24 +12,22 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText username;
-    EditText password;
+    EditText usernameET;
+    EditText passwordET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        username = findViewById(R.id.editTextTextPersonName);
-        password = findViewById(R.id.editTextTextPassword);
+        usernameET = findViewById(R.id.editTextTextPersonName);
+        passwordET = findViewById(R.id.editTextTextPassword);
 
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText loginET = findViewById(R.id.editTextTextPersonName);
-                EditText passwordET = findViewById(R.id.editTextTextPassword);
-                String login = loginET.getText().toString();
+                String login = usernameET.getText().toString();
                 String password = passwordET.getText().toString();
 
                 if ((login.compareTo(UserInformation.ADMIN_LOGIN) == 0) &&
@@ -38,10 +36,11 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 }
 
-                if ((login.compareTo(UserInformation.PLAYER_LOGIN) == 0) &&
-                        (password.compareTo(UserInformation.PLAYER_PASSWORD) == 0)) {
+                if (((login.compareTo(UserInformation.PLAYER_LOGIN) == 0) &&
+                        (password.compareTo(UserInformation.PLAYER_PASSWORD) == 0)) ||
+                        (UserInformation.users.get(login) == password)) {
                     Intent intent = new Intent(LoginActivity.this, PlayerActivity.class);
-                    intent.putExtra("username", username.getText().toString());
+                    intent.putExtra("username", login);
                     startActivity(intent);
                     finish();
                 }

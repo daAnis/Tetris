@@ -17,10 +17,10 @@ import java.util.ArrayList;
 public class GameStartActivity extends AppCompatActivity
         implements GlassAdapter.OnGlassListener, AudioAdapter.OnAudioListener {
 
-    private static ArrayList<Glass> glasses = new ArrayList<>();
+    private static ArrayList<Glass> glasses;
     private static GlassPlayerAdapter glassAdapter;
 
-    private static ArrayList<Audio> audios = new ArrayList<>();
+    private static ArrayList<Audio> audios;
     private static AudioPlayerAdapter audioAdapter;
 
     private Glass glass;
@@ -33,6 +33,9 @@ public class GameStartActivity extends AppCompatActivity
 
         glass = null;
         audio = null;
+
+        glasses = new ArrayList<>();
+        audios = new ArrayList<>();
 
         glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
         glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
