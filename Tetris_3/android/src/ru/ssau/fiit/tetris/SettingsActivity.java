@@ -34,7 +34,6 @@ public class SettingsActivity extends AppCompatActivity {
         nextF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo
                 if (nextF_show)
                     nextF_show = false;
                 else nextF_show = true;
@@ -47,7 +46,6 @@ public class SettingsActivity extends AppCompatActivity {
         musicOnOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo
                 if (musicOnOff_show)
                     musicOnOff_show = false;
                 else musicOnOff_show = true;
@@ -63,15 +61,12 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i) {
                     case R.id.rb_points:
-                        //todo
                         results_show = R.id.rb_points;
                         break;
                     case R.id.rb_time:
-                        //todo
                         results_show = R.id.rb_time;
                         break;
                     case R.id.rb_no:
-                        //todo
                         results_show = R.id.rb_no;
                         break;
                 }

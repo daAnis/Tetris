@@ -23,6 +23,9 @@ public class AudioPlayerAdapter extends AudioAdapter {
         if (audioList.get(position).getUri() == null) {
             holder.getPlayView().setVisibility(View.GONE);
             holder.getSeekView().setVisibility(View.GONE);
+        } else {
+            holder.getPlayView().setVisibility(View.VISIBLE);
+            holder.getSeekView().setVisibility(View.VISIBLE);
         }
         //событие выбора аудио
         holder.getView().setOnClickListener(new View.OnClickListener() {
@@ -33,7 +36,7 @@ public class AudioPlayerAdapter extends AudioAdapter {
                 holder.getOnAudioListener().onAudioClick(position);
             }
         });
-        //установка выбранного элементы
+        //установка выбранного элемента
         if (selectedAudio == position) {
             holder.getView().setBackgroundResource(R.drawable.selected_item);
         } else {

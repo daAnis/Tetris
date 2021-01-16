@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -37,9 +36,9 @@ public class GameStartActivity extends AppCompatActivity
 
         glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
         glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
+        glasses.add(new Glass(9, 17, Color.MAGENTA, 0.1, 0.1));
         audios.add(new Audio("Без звука"));
         audios.add(new Audio("Звуки природы", Uri.parse("android.resource://" + getPackageName() + "/raw/test")));
-        audios.add(new Audio("Звуки природы1", Uri.parse("android.resource://" + getPackageName() + "/raw/test")));
 
         //отобразить список стаканов
         RecyclerView glassList = findViewById(R.id.glass_list_player);

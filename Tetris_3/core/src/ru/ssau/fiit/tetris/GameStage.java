@@ -13,8 +13,8 @@ import static ru.ssau.fiit.tetris.Constants.INDEX_COLUMN;
 import static ru.ssau.fiit.tetris.Constants.INDEX_ROW;
 
 public class GameStage extends Actor {
-    public static final int NUM_COLUMNS = 10;
-    public static final int NUM_ROWS = 22;
+    public static int NUM_COLUMNS;
+    public static int NUM_ROWS;
 
     private boolean[][] isFilled = new boolean[NUM_COLUMNS][NUM_ROWS];
     private ShapeRenderer shapeRenderer = new ShapeRenderer();

@@ -114,9 +114,9 @@ public class AdminActivity extends AppCompatActivity
                 {
                     final Cursor cursor = getContentResolver().query( data.getData(), null, null, null, null );
                     cursor.moveToFirst();
-                    final String filePath = cursor.getString(2);
+                    final String fileName = cursor.getString(2);
                     cursor.close();
-                    saveAudio(new Audio(filePath, data.getData()));
+                    saveAudio(new Audio(fileName, data.getData()));
                 }
                 break;
             }

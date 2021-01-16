@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import sun.nio.cs.ext.GB18030;
+import java.util.concurrent.TimeUnit;
 
 import static ru.ssau.fiit.tetris.Constants.CELL_SIZE;
 import static ru.ssau.fiit.tetris.Constants.STAGE_HEIGHT;
@@ -57,11 +56,16 @@ public class Tetris extends ApplicationAdapter {
 	private String string;
 
 	private IActivityRequestHandler myRequestHandler;
+	private boolean nextFigureShow;
+	private byte resultDisplay;
 
-	public Tetris (IActivityRequestHandler handler, int columns, int rows) {
+	public Tetris (IActivityRequestHandler handler, int columns, int rows, boolean nextFigureShow, byte resultDisplay) {
 		myRequestHandler = handler;
-		Constants.setStageHeight(CELL_SIZE * rows);
-		Constants.setStageWidth(CELL_SIZE * columns);
+		NUM_COLUMNS = columns;
+		NUM_ROWS = rows;
+		CELL_SIZE = (STAGE_WIDTH / columns) * 32 / 48;
+		this.nextFigureShow = nextFigureShow;
+		this.resultDisplay = resultDisplay;
 	}
 
 	public static void renderBlock(ShapeRenderer renderer, int column, int row) {
@@ -118,8 +122,8 @@ public class Tetris extends ApplicationAdapter {
 		downArrow.setPosition(90, 0);
 		rightArrow.setPosition(180, 0);
 		circle.setPosition(270, 0);
-		pause.setPosition(305, 270);
-		stop.setPosition(305, 180);
+		pause.setPosition(CELL_SIZE * NUM_COLUMNS, 270);
+		stop.setPosition(CELL_SIZE * NUM_COLUMNS, 180);
 		controlGroup.addActor(rightArrow);
 		controlGroup.addActor(leftArrow);
 		controlGroup.addActor(circle);
@@ -150,10 +154,12 @@ public class Tetris extends ApplicationAdapter {
 					STAGE_HEIGHT / 2 - gameoverFont.getLineHeight() / 2);
 			batch.end();
 			if (Gdx.input.isTouched()) {
-				if (string.compareTo("Pause") == 0)
+				if (string.compareTo("Pause") == 0) {
 					isGameGoing = true;
-				else
-					myRequestHandler.closeGame(score, TimeUtils.timeSinceMillis(time));
+					myRequestHandler.onGamePaused();
+				} else {
+					myRequestHandler.onGameClosed(score, TimeUtils.timeSinceMillis(time));
+				}
 				/*else if (string.compareTo("Game stopped") == 0)
 
 				else if (string.compareTo("You lose") == 0)
@@ -222,29 +228,42 @@ public class Tetris extends ApplicationAdapter {
 	}
 
 	//отвечает за отрисовку экрана игры в данный момент
+	@SuppressWarnings("DefaultLocale")
 	private void renderStage() {
 		//обновляет сцену//время между последним и текущим кадром в секундах
 		stage.act(Gdx.graphics.getDeltaTime());
 		//отрисовывает сцену
 		stage.draw();
 
-		renderer.setProjectionMatrix(camera.combined);
-		renderer.begin(ShapeRenderer.ShapeType.Line);
-		//отображение следующей фигуры
 		int nextTetriminoBoxX = CELL_SIZE * NUM_COLUMNS + 2 * STAGE_START_X;
 		int nextTetriminoBoxY = STAGE_START_Y + CELL_SIZE * NUM_ROWS - NEXT_TETROIMINO_SIZE;
-		renderer.rect(nextTetriminoBoxX - 1, nextTetriminoBoxY - 1, NEXT_TETROIMINO_SIZE + 2, NEXT_TETROIMINO_SIZE + 2);
-		renderer.end();
 
-		renderer.begin(ShapeRenderer.ShapeType.Filled);
-		currentTetromino.render(renderer);
-		nextTetromino.render(renderer, nextTetriminoBoxX, nextTetriminoBoxY, NEXT_TETROIMINO_SIZE / 4);
-		renderer.end();
+		//отображение следующей фигуры
+		if (nextFigureShow) {
 
-		batch.setProjectionMatrix(camera.combined);
+			renderer.setProjectionMatrix(camera.combined);
+			renderer.begin(ShapeRenderer.ShapeType.Line);
+
+			renderer.rect(nextTetriminoBoxX - 1, nextTetriminoBoxY - 1, NEXT_TETROIMINO_SIZE + 2, NEXT_TETROIMINO_SIZE + 2);
+			renderer.end();
+
+			renderer.begin(ShapeRenderer.ShapeType.Filled);
+			currentTetromino.render(renderer);
+			nextTetromino.render(renderer, nextTetriminoBoxX, nextTetriminoBoxY, NEXT_TETROIMINO_SIZE / 4);
+			renderer.end();
+		}
+
 		//отображение очков
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		scoreFont.draw(batch, String.format("Score: %d", score), nextTetriminoBoxX, nextTetriminoBoxY - 30);
+		if (resultDisplay == 0)
+			scoreFont.draw(batch, String.format("Score: %d", score), nextTetriminoBoxX, nextTetriminoBoxY - 30);
+		else if (resultDisplay == 1)
+			scoreFont.draw(batch, String.format(" %02d : %02d ",
+					TimeUnit.MILLISECONDS.toMinutes(time),
+					TimeUnit.MILLISECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))),
+					nextTetriminoBoxX, nextTetriminoBoxY - 30);
+			//scoreFont.draw(batch, String.format("Time: %d", time), nextTetriminoBoxX, nextTetriminoBoxY - 30);
 		batch.end();
 	}
 
