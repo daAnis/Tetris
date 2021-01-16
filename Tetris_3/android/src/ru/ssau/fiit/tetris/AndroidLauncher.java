@@ -40,12 +40,12 @@ public class AndroidLauncher extends AndroidApplication implements IActivityRequ
 		}
 		//устанавливаем значения в соответствии с настройками
 		byte id;
-		if (SettingsActivity.results_show == R.id.rb_points)
-			id = 0;
-		else if (SettingsActivity.results_show == R.id.rb_time)
-			id = 1;
+		if (SettingsActivity.results_show == R.id.rb_points) id = 0;
+		else if (SettingsActivity.results_show == R.id.rb_time) id = 1;
 		else id = 2;
-		initialize(new Tetris(this, glass.getWidth(), glass.getHeight(), SettingsActivity.nextF_show, id), config);
+		initialize(new Tetris(this,
+				glass.getWidth(), glass.getHeight(), glass.getPoints_k(), glass.getSpeed_k(),
+				SettingsActivity.nextF_show, id), config);
 	}
 
 	@Override

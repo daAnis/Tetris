@@ -36,7 +36,7 @@ public class GameStartActivity extends AppCompatActivity
 
         glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
         glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
-        glasses.add(new Glass(9, 17, Color.MAGENTA, 0.1, 0.1));
+        glasses.add(new Glass(9, 17, Color.MAGENTA, 0.6, 0.1));
         audios.add(new Audio("Без звука"));
         audios.add(new Audio("Звуки природы", Uri.parse("android.resource://" + getPackageName() + "/raw/test")));
 

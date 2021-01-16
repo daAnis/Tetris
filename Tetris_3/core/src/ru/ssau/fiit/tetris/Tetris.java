@@ -69,8 +69,8 @@ public class Tetris extends ApplicationAdapter {
 		NUM_ROWS = rows;
 		CELL_SIZE = (STAGE_WIDTH / columns) * 32 / 48;
 
-		this.pointsUp = pointsUp;
-		this.speedUp = speedUp;
+		this.pointsUp = pointsUp + 1.0;
+		this.speedUp = speedUp + 1.0;
 		this.nextFigureShow = nextFigureShow;
 		this.resultDisplay = resultDisplay;
 	}
@@ -196,10 +196,12 @@ public class Tetris extends ApplicationAdapter {
 
 		//фигура достигла дна, необходимо проверить на собранную строку
 		if (gameStage.isOnGround(currentTetromino.getBlocks())) {
-			int numDeletedRows = gameStage.setBlocks(currentTetromino.getBlocks());
-
-			//score += SCORES[numDeletedRows];
-			score += pointsUp * numDeletedRows * NUM_COLUMNS;
+			int numDeletedRows;
+			//удаляем строки, пока удаляются
+			while ((numDeletedRows = gameStage.setBlocks(currentTetromino.getBlocks())) > 0) {
+				//увеличиваем значение очков
+				score += pointsUp * numDeletedRows * NUM_COLUMNS;
+			}
 
 			//получение следующей фигуры
 			currentTetromino = nextTetromino;
