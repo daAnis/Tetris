@@ -32,11 +32,7 @@ public class AdminActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-
-        /*glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
-        glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
-        figures.add(new Figure(5, new byte[][]{{0,0,0,0},{0,1,1,0},{0,1,0,0},{0,0,0,0}}));
-        audios.add(new Audio("Звуки природы", getRawUri("test")));*/
+        init();
 
         //отобразить список стаканов
         RecyclerView glassList = findViewById(R.id.glass_list);
@@ -208,4 +204,13 @@ public class AdminActivity extends AppCompatActivity
 
     @Override
     public void onAudioClick(int position) { }
+
+    private void init() {
+        glasses.add(new Glass(10, 12, Color.YELLOW, 0.1, 0.1));
+        glasses.add(new Glass(7, 9, Color.RED, 0.1, 0.1));
+        glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
+        glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
+        audios.add(new Audio("Без звука"));
+        audios.add(new Audio("Вариант 1", Uri.parse("android.resource://" + getPackageName() + "/raw/test")));
+    }
 }

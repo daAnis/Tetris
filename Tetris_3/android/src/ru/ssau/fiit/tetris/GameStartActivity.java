@@ -36,12 +36,7 @@ public class GameStartActivity extends AppCompatActivity
 
         glasses = new ArrayList<>();
         audios = new ArrayList<>();
-
-        glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
-        glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
-        glasses.add(new Glass(9, 17, Color.MAGENTA, 0.6, 0.1));
-        audios.add(new Audio("Без звука"));
-        audios.add(new Audio("Звуки природы", Uri.parse("android.resource://" + getPackageName() + "/raw/test")));
+        init();
 
         //отобразить список стаканов
         RecyclerView glassList = findViewById(R.id.glass_list_player);
@@ -92,5 +87,15 @@ public class GameStartActivity extends AppCompatActivity
     @Override
     public void onGlassClick(int position) {
         glass = glasses.get(position);
+    }
+
+    private void init() {
+        glasses.add(new Glass(10, 12, Color.YELLOW, 0.1, 0.1));
+        glasses.add(new Glass(7, 9, Color.RED, 0.1, 0.1));
+        glasses.add(new Glass(15, 25, Color.BLACK, 0.1, 0.1));
+        glasses.add(new Glass(5, 5, Color.BLUE, 0.1, 0.1));
+        glasses.add(new Glass(9, 17, Color.MAGENTA, 0.6, 0.1));
+        audios.add(new Audio("Без звука"));
+        audios.add(new Audio("Вариант 1", Uri.parse("android.resource://" + getPackageName() + "/raw/test")));
     }
 }
