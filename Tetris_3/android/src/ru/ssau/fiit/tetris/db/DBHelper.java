@@ -5,7 +5,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import ru.ssau.fiit.tetris.Audio;
 import ru.ssau.fiit.tetris.Figure;
+import ru.ssau.fiit.tetris.FigureArray;
 import ru.ssau.fiit.tetris.Glass;
+import ru.ssau.fiit.tetris.Record;
 import ru.ssau.fiit.tetris.User;
 
 public class DBHelper {
@@ -15,6 +17,13 @@ public class DBHelper {
         //String id = reference.push().getKey();
         //user.setUserId(id);
         reference.child(user.getUsername()).setValue(user);
+    }
+
+    public static void addRecordToDataBase(Record record) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("records");
+        String id = reference.push().getKey();
+        record.setRecordId(id);
+        reference.child(id).setValue(record);
     }
 
     public static void addGlassToDataBase(Glass glass) {
@@ -35,6 +44,11 @@ public class DBHelper {
         String id = reference.push().getKey();
         figure.setFigureId(id);
         reference.child(id).setValue(figure);
+    }
+
+    public static void deleteFigureFromDataBase(Figure figure) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("figures").child(figure.getFigureId());
+        reference.removeValue();
     }
 
     public static void addAudioToDataBase(Audio audio) {

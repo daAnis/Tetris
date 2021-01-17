@@ -39,10 +39,10 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.MyViewHolder
         final Audio audio = audioList.get(position);
         holder.getNameView().setText(audio.getName());
 
-        //if (audio.getUri() == null) return;
-        if (audio.getUriSerializable().equals("")) return;
-
         final MediaPlayer mediaPlayer = MediaPlayer.create(inflater.getContext(), Uri.parse(audio.getUriSerializable()));
+
+        if (mediaPlayer == null) return;
+
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override

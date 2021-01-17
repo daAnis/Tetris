@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText usernameET;
     private EditText passwordET;
     private EditText passwordRepeatET;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,16 @@ public class SignUpActivity extends AppCompatActivity {
         usernameET = findViewById(R.id.editTextTextPersonName_s);
         passwordET = findViewById(R.id.editTextTextPassword_s);
         passwordRepeatET = findViewById(R.id.editTextTextPasswordRepeat);
+
+        button = findViewById(R.id.login_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
+        button.setVisibility(View.GONE);
 
         ImageButton imageButton = findViewById(R.id.imageButton_s);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +84,7 @@ public class SignUpActivity extends AppCompatActivity {
                             finish();
                         } else {
                             Toast.makeText(SignUpActivity.this, "Такой пользователь уже зарегистрирован!", Toast.LENGTH_LONG).show();
+                            button.setVisibility(View.VISIBLE);
                         }
                     }
                     @Override

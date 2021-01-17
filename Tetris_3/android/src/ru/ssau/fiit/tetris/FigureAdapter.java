@@ -12,11 +12,11 @@ import java.util.List;
 
 public class FigureAdapter extends RecyclerView.Adapter<FigureAdapter.MyViewHolder> {
     private LayoutInflater inflater;
-    private List<Figure> figures;
+    private List<FigureArray> figureArrays;
     private OnFigureListener onFigureListener;
 
-    public FigureAdapter(Context context, List<Figure> figures, OnFigureListener onFigureListener) {
-        this.figures = figures;
+    public FigureAdapter(Context context, List<FigureArray> figureArrays, OnFigureListener onFigureListener) {
+        this.figureArrays = figureArrays;
         this.inflater = LayoutInflater.from(context);
         this.onFigureListener = onFigureListener;
     }
@@ -30,11 +30,11 @@ public class FigureAdapter extends RecyclerView.Adapter<FigureAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.getFigureView().setFigure(figures.get(position));
+        holder.getFigureView().setFigure(figureArrays.get(position));
     }
 
     @Override
-    public int getItemCount() { return figures.size(); }
+    public int getItemCount() { return figureArrays.size(); }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
         private FigureView figureView;

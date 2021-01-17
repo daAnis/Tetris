@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String login = usernameET.getText().toString();
-                String password = passwordET.getText().toString();
+                final String password = passwordET.getText().toString();
 
                 if ((login.compareTo(User.ADMIN_LOGIN) == 0) &&
                         (password.compareTo(User.ADMIN_PASSWORD) == 0)) {
@@ -77,10 +77,14 @@ public class LoginActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             User user = snapshot.child(login).getValue(User.class);
-                            Intent intent = new Intent(LoginActivity.this, PlayerActivity.class);
-                            intent.putExtra(User.class.getSimpleName(), user);
-                            startActivity(intent);
-                            finish();
+                            if (user.getPassword().equals(password)) {
+                                Intent intent = new Intent(LoginActivity.this, PlayerActivity.class);
+                                intent.putExtra(User.class.getSimpleName(), user);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Неверный пароль!", Toast.LENGTH_LONG).show();
+                            }
                         } else {
                             Toast.makeText(LoginActivity.this, "Такого пользователя не существует!", Toast.LENGTH_LONG).show();
                             signUpButton.setVisibility(View.VISIBLE);

@@ -45,8 +45,8 @@ public class FigureView extends View {
 
     public byte [][] getStructure() { return filled; }
 
-    public void setFigure(Figure figure) {
-        byte [][] a = figure.getStructure();
+    public void setFigure(FigureArray figureArray) {
+        byte [][] a = figureArray.getStructure();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 filled[i][j] = a[i][j];

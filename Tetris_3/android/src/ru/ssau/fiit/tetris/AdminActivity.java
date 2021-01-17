@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,7 +29,8 @@ public class AdminActivity extends AppCompatActivity
     private static ArrayList<Glass> glasses = new ArrayList<>();
     private static GlassAdapter glassAdapter;
 
-    private static ArrayList<Figure> figures = new ArrayList<>();
+    private RecyclerView figuresList;
+    private static ArrayList<FigureArray> figureArrays = new ArrayList<>();
     private static FigureAdapter figureAdapter;
 
     private RecyclerView audioList;
@@ -52,12 +51,8 @@ public class AdminActivity extends AppCompatActivity
         dataTableGlasses = FirebaseDatabase.getInstance().getReference("glasses");
 
         //отобразить список фигур
-        RecyclerView figuresList = findViewById(R.id.figure_list);
-        figureAdapter = new FigureAdapter(this, figures, this);
-        figuresList.setAdapter(figureAdapter);
-        RecyclerView.LayoutManager manager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        figuresList.setLayoutManager(manager1);
-        figuresList.setHasFixedSize(false);
+        figuresList = findViewById(R.id.figure_list);
+        dataTableFigures = FirebaseDatabase.getInstance().getReference("figures");
 
         //отобразить список аудио
         audioList = findViewById(R.id.music_list);
@@ -111,11 +106,27 @@ public class AdminActivity extends AppCompatActivity
                 glassList.setLayoutManager(manager);
                 glassList.setHasFixedSize(false);
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
 
+        dataTableFigures.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                figureArrays.clear();
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    Figure figure = snap.getValue(Figure.class);
+                    FigureArray figureArray = new FigureArray(figure.getFigureId(), figure.getLevel(), figure.getStructureString());
+                    figureArrays.add(figureArray);
+                }
+                figureAdapter = new FigureAdapter(AdminActivity.this, figureArrays, AdminActivity.this);
+                figuresList.setAdapter(figureAdapter);
+                RecyclerView.LayoutManager manager1 = new LinearLayoutManager(AdminActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                figuresList.setLayoutManager(manager1);
+                figuresList.setHasFixedSize(false);
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
 
         dataTableAudios.addValueEventListener(new ValueEventListener() {
@@ -132,11 +143,8 @@ public class AdminActivity extends AppCompatActivity
                 audioList.setLayoutManager(manager2);
                 audioList.setHasFixedSize(false);
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
 
@@ -179,26 +187,27 @@ public class AdminActivity extends AppCompatActivity
         DBHelper.deleteGlassFromDataBase(glass);
     }
 
-    public static void saveFigure(Figure figure) throws Exception {
-        //todo передача фигуры в бд
-        for (Figure f : figures) {
-            if (figure.equals(f)) {
+    public static void saveFigure(FigureArray figureArray) throws Exception {
+        /*int t_n = 0;
+        while (t_n < 4) {
+            for (FigureArray f : figureArrays) {
+                if (figureArray.equals(f)) {
+                    throw new Exception("Фигура не уникальна!");
+                }
+            }
+            figureArray.setStructureRotate();
+            t_n++;
+        }*/
+        for (FigureArray f : figureArrays) {
+            if (figureArray.equals(f)) {
                 throw new Exception("Фигура не уникальна!");
             }
         }
-        figures.add(figure);
-        figureAdapter.notifyDataSetChanged();
+        DBHelper.addFigureToDataBase(figureArray.getFigure());
     }
 
-    public static void deleteFigure(Figure figure) {
-        //todo удаление фигуры из бд
-        for (Figure f : figures) {
-            if (figure.equals(f)) {
-                figures.remove(f);
-                break;
-            }
-        }
-        figureAdapter.notifyDataSetChanged();
+    public static void deleteFigure(FigureArray figureArray) {
+        DBHelper.deleteFigureFromDataBase(figureArray.getFigure());
     }
 
     public static void saveAudio(Audio audio) {
@@ -213,7 +222,7 @@ public class AdminActivity extends AppCompatActivity
     @Override
     public void onFigureClick(int position) {
         Intent intent = new Intent(this, FigureActivity.class);
-        intent.putExtra(Figure.class.getSimpleName(), figures.get(position));
+        intent.putExtra(FigureArray.class.getSimpleName(), figureArrays.get(position));
         startActivity(intent);
     }
 
